@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
  */
 interface AuthProps {
   onSignIn?: (credentials: { email: string; password: string }) => void;
-  onSignUp?: (userData: { name: string; email: string; password: string }) => void;
+  onSignUp?: (userData: { name: string; email: string; password: string; jobTitle: string; nationalSociety: string }) => void;
 }
 
 export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
@@ -19,6 +19,8 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
     name: "",
     email: "",
     password: "",
+    jobTitle: "",
+    nationalSociety: "",
   });
 
   // Sign-in form state
@@ -87,12 +89,12 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
 
               <div className="ma-field">
                 <label className="ma-label">
-                  <span className="ma-num">i.</span>Full Name
+                  Full Name
                 </label>
                 <input
                   className="ma-input"
                   type="text"
-                  placeholder="As you'd like to be known"
+                  placeholder="Enter your name"
                   value={signUpData.name}
                   onChange={(e) =>
                     setSignUpData({ ...signUpData, name: e.target.value })
@@ -102,7 +104,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
               </div>
               <div className="ma-field">
                 <label className="ma-label">
-                  <span className="ma-num">ii.</span>Email
+                  Email
                 </label>
                 <input
                   className="ma-input"
@@ -117,7 +119,37 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
               </div>
               <div className="ma-field">
                 <label className="ma-label">
-                  <span className="ma-num">iii.</span>Password
+                  Job Title
+                </label>
+                <input
+                  className="ma-input"
+                  type="text"
+                  placeholder="Your position"
+                  value={signUpData.jobTitle}
+                  onChange={(e) =>
+                    setSignUpData({ ...signUpData, jobTitle: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="ma-field">
+                <label className="ma-label">
+                  National Society
+                </label>
+                <input
+                  className="ma-input"
+                  type="text"
+                  placeholder="Your organization"
+                  value={signUpData.nationalSociety}
+                  onChange={(e) =>
+                    setSignUpData({ ...signUpData, nationalSociety: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="ma-field">
+                <label className="ma-label">
+                  Password
                 </label>
                 <input
                   className="ma-input"
@@ -149,7 +181,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
 
               <div className="ma-field">
                 <label className="ma-label">
-                  <span className="ma-num">i.</span>Email
+                  Email
                 </label>
                 <input
                   className="ma-input"
@@ -164,7 +196,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
               </div>
               <div className="ma-field">
                 <label className="ma-label">
-                  <span className="ma-num">ii.</span>Password
+                  Password
                 </label>
                 <input
                   className="ma-input"
@@ -205,7 +237,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                 Hello,<strong>Stranger.</strong>
               </h2>
               <p className="ma-switch-desc">
-                Already a member? Step back through the door and we'll pick up where you left off.
+                <strong>Already a member? Step back through the door and we'll pick up where you left off.</strong>
               </p>
               <button className="ma-switch-btn" type="button" onClick={toggleForm}>
                 <span>Sign In</span>
@@ -219,7 +251,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                 Hello,<strong>Friend.</strong>
               </h2>
               <p className="ma-switch-desc">
-                Not a member yet? Leave your details and we'll prepare a place for you.
+                <strong>Not a member yet? Leave your details and we'll prepare a place for you.</strong>
               </p>
               <button className="ma-switch-btn" type="button" onClick={toggleForm}>
                 <span>Sign Up</span>
@@ -315,14 +347,16 @@ const css = `
   .ma-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     position: absolute;
     top: 0;
     width: 60%;
     height: 100%;
-    padding: 60px clamp(32px, 6vw, 80px);
+    padding: 40px clamp(32px, 6vw, 80px);
     background-color: #ffffff;
     transition: 1.1s cubic-bezier(0.7, 0, 0.3, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .ma-a { z-index: 100; left: 40%; }
   .ma-b { z-index: 0;   left: 40%; }
@@ -384,7 +418,6 @@ const css = `
     display: block;
     margin-bottom: 6px;
   }
-  .ma-num { color: var(--ma-red); margin-right: 8px; }
   .ma-input {
     width: 100%;
     height: 42px;

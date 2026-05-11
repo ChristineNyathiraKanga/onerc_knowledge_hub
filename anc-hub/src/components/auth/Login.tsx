@@ -31,6 +31,8 @@ export default function LoginForm() {
     name: string;
     email: string;
     password: string;
+    jobTitle: string;
+    nationalSociety: string;
   }) => {
     if (isLoading) return;
 
