@@ -1,0 +1,16 @@
+{
+  "name": "onerc_knowledge_hub",
+  "version": "1.0.0",
+  "description": "Platform that allows different members of the National societies to interact and share peer to peer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd anc-hub && yarn install",
+    "dev": "cd anc-hub && yarn dev",
+    "build": "cd anc-hub && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

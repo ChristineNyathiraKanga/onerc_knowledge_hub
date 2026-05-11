@@ -1,7 +1,9 @@
 app_name = "onerc_knowledge_hub"
 app_title = "Onerc Knowledge Hub"
 app_publisher = "Kenya Red Cross Society"
-app_description = "Platform that allows different members of the National societies to interact and share peer to peer"
+app_description = (
+	"Platform that allows different members of the National societies to interact and share peer to peer"
+)
 app_email = "developer@redcross.or.ke"
 app_license = "agpl-3.0"
 
@@ -11,15 +13,15 @@ app_license = "agpl-3.0"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "onerc_knowledge_hub",
-# 		"logo": "/assets/onerc_knowledge_hub/logo.png",
-# 		"title": "Onerc Knowledge Hub",
-# 		"route": "/onerc_knowledge_hub",
-# 		"has_permission": "onerc_knowledge_hub.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "onerc_knowledge_hub",
+		"logo": "/assets/onerc_knowledge_hub/logo.png",
+		"title": "Onerc Knowledge Hub",
+		"route": "/onerc_knowledge_hub",
+		"has_permission": "onerc_knowledge_hub.api.permission.has_app_permission",
+	}
+]
 
 # Includes in <head>
 # ------------------
@@ -256,3 +258,7 @@ app_license = "agpl-3.0"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+
+website_route_rules = [
+	{"from_route": "/anc-hub/<path:app_path>", "to_route": "anc-hub"},
+]
