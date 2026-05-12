@@ -260,5 +260,5 @@ add_to_apps_screen = [
 
 
 website_route_rules = [
-	{"from_route": "/anc-hub/<path:app_path>", "to_route": "anc-hub"},
+	{"from_route": "/ans-hub/<path:app_path>", "to_route": "ans-hub"},
 ]
