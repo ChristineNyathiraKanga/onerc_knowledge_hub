@@ -39,7 +39,7 @@ if (!rootElement) {
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <BrowserRouter basename="/anc-hub">
+    <BrowserRouter basename="/ans-hub">
       <FrappeProvider url={getFrappeUrl()} siteName={getSiteName()}>
         <AppRouter />
       </FrappeProvider>
