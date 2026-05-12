@@ -5,10 +5,27 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "identity_section",
   "full_official_name",
   "short_name",
   "column_break_shct",
   "country",
+  "section_break_peeh",
+  "website",
+  "physical_address",
+  "column_break_wscg",
+  "phone_number",
+  "social_media",
+  "official_email",
+  "leadership_section",
+  "secretary_general_name",
+  "secretary_general_email",
+  "organisation_size_section",
+  "active_vonteers",
+  "staff_count",
+  "active_branches",
+  "column_break_biok",
+  "country_coverage",
   "section_break_twnb",
   "pillars"
  ],
@@ -49,19 +66,107 @@
   },
   {
    "fieldname": "section_break_twnb",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Pillars"
   },
   {
    "fieldname": "pillars",
    "fieldtype": "Table",
    "label": "Pillars",
    "options": "NS Pillar"
+  },
+  {
+   "fieldname": "section_break_peeh",
+   "fieldtype": "Section Break",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "website",
+   "fieldtype": "Data",
+   "label": "Website"
+  },
+  {
+   "fieldname": "physical_address",
+   "fieldtype": "Small Text",
+   "label": "Physical Address"
+  },
+  {
+   "fieldname": "official_email",
+   "fieldtype": "Data",
+   "label": "Official Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "identity_section",
+   "fieldtype": "Section Break",
+   "label": "Identity"
+  },
+  {
+   "fieldname": "social_media",
+   "fieldtype": "Data",
+   "label": "Social Media",
+   "options": "URL"
+  },
+  {
+   "fieldname": "leadership_section",
+   "fieldtype": "Section Break",
+   "label": "Leadership"
+  },
+  {
+   "fieldname": "secretary_general_name",
+   "fieldtype": "Data",
+   "label": "Secretary General Name"
+  },
+  {
+   "fieldname": "secretary_general_email",
+   "fieldtype": "Data",
+   "label": "Secretary General Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "organisation_size_section",
+   "fieldtype": "Section Break",
+   "label": "Organisation Size"
+  },
+  {
+   "fieldname": "active_vonteers",
+   "fieldtype": "Int",
+   "label": "Active Vonteers"
+  },
+  {
+   "fieldname": "staff_count",
+   "fieldtype": "Int",
+   "label": "Staff Count"
+  },
+  {
+   "fieldname": "active_branches",
+   "fieldtype": "Int",
+   "label": "Active Branches"
+  },
+  {
+   "fieldname": "country_coverage",
+   "fieldtype": "Small Text",
+   "label": "Country Coverage"
+  },
+  {
+   "fieldname": "column_break_wscg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_biok",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-11 14:35:56.288629",
+ "modified": "2026-05-12 16:10:08.889601",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "National Society",
