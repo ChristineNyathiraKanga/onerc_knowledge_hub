@@ -19,9 +19,6 @@
   "section_attribution",
   "contributing_ns",
   "uploaded_by",
-  "section_classification",
-  "pillar_tags",
-  "region",
   "section_status",
   "status",
   "published_date",
@@ -43,7 +40,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Resource Category",
-   "options": "Publication\nReport\nTools & Templates",
+   "options": "\nPublication\nReport\nTools & Templates",
    "reqd": 1
   },
   {
@@ -54,7 +51,6 @@
    "options": "\nStrategy Templates\nInstitutional Policy Templates\nTools & Frameworks\nProposal & Resource Mobilisation Templates"
   },
   {
-   "description": "Max 300 characters. Shown on cards.",
    "fieldname": "summary",
    "fieldtype": "Small Text",
    "label": "Summary"
@@ -82,9 +78,9 @@
   },
   {
    "fieldname": "language",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Language",
-   "options": "\nEnglish\nFrench\nArabic\nPortuguese\nOther",
+   "options": "Language",
    "reqd": 1
   },
   {
@@ -101,29 +97,14 @@
    "reqd": 1
   },
   {
+   "default": "__user",
    "fieldname": "uploaded_by",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Uploaded By",
-   "options": "Member"
+   "read_only": 1
   },
   {
-   "fieldname": "section_classification",
-   "fieldtype": "Section Break",
-   "label": "Classification"
-  },
-  {
-   "fieldname": "pillar_tags",
-   "fieldtype": "Table MultiSelect",
-   "label": "Pillar Tags",
-   "options": "Pillar Link"
-  },
-  {
-   "fieldname": "region",
-   "fieldtype": "Select",
-   "label": "Region",
-   "options": "\nEast Africa\nWest Africa\nCentral Africa\nNorth Africa\nSouthern Africa"
-  },
-  {
+   "collapsible": 1,
    "fieldname": "section_status",
    "fieldtype": "Section Break",
    "label": "Status"
@@ -172,7 +153,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-11 15:07:57.995226",
+ "modified": "2026-05-12 15:33:49.499427",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "Knowledge Hub",
