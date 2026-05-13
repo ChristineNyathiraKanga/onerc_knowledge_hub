@@ -7,50 +7,64 @@ from frappe.utils import validate_email_address
 
 
 class LocalisationHubUser(Document):
-    # on save update full name
-    def before_save(self):
-        if self.full_name:
-            names = self.full_name.split()
-            self.first_name = names[0] if names else ""
-            self.middle_name = names[1] if len(names) >= 2 else ""
-            self.last_name = " ".join(names[2:]) if len(names) >= 3 else (names[1] if len(names) == 2 else "")
-        self.full_name = " ".join(filter(None, [self.first_name, self.middle_name, self.last_name]))
+	#set full_name
+	def before_save(self):
+		self.full_name = " ".join(filter(None, [self.first_name, self.middle_name, self.last_name]))
+
+	def on_update(self):
+		if self.status == "Approved" and not self.user_id:
+			try:
+				create_user(self.name, self.prefered_contact_email or self.company_email)
+			except Exception as e:
+				frappe.throw(str(e))
+
 
 @frappe.whitelist()
-def create_user(localisation_hub_full_name, email=None, create_user_permission=0):
-    usr = frappe.get_doc("Localisation Hub User", localisation_hub_full_name)
+def create_user(name, email=None):
+	usr = frappe.get_doc("Localisation Hub User", name)
 
-    if usr.user_id:
-        frappe.throw(frappe._("User {0} already has a linked user").format(usr.name))
+	if usr.user_id:
+		frappe.throw(frappe._("User {0} already has a linked user").format(usr.name))
 
-    # derive email from doc if not passed
-    if not email:
-        email = usr.prefered_contact_email or usr.company_email
+	if not email:
+		email = usr.prefered_contact_email or usr.company_email
 
-    validate_email_address(email, True)
+	if not email:
+		frappe.throw(
+			frappe._(
+				"No email address is available for Localisation Hub User {0}. "
+				"Please set a Preferred Contact Email or Company Email."
+			).format(usr.name)
+		)
 
-    # check for a User with this email
-    if frappe.db.exists("User", email):
-        frappe.throw(frappe._("User {0} already exists").format(email))
+	validate_email_address(email, True)
 
-    names = (usr.full_name or "").split()
-    first_name = names[0] if names else (usr.first_name or "")
-    middle_name = names[1] if len(names) >= 2 else (usr.middle_name or "")
-    last_name = " ".join(names[2:]) if len(names) >= 3 else (names[1] if len(names) == 2 else (usr.last_name or ""))
+	if frappe.db.exists("User", email):
+		frappe.throw(frappe._("User {0} already exists").format(email))
 
-    # create user and add at least the "User" role before insert to avoid the "no roles enabled" warning
-    user = frappe.get_doc({
-        "doctype": "User",
-        "email": email,
-        "enabled": 1,
-        "first_name": first_name,
-        "middle_name": middle_name,
-        "last_name": last_name,
-        "phone": usr.phone_number
-    })
-    # user.append("roles", {"role": "Localisation Hub User"})
-    user.insert()
+	# Create the user disabled
+	user = frappe.get_doc({
+		"doctype": "User",
+		"email": email,
+		"enabled": 0,
+		"first_name": usr.first_name,
+		"middle_name": usr.middle_name,
+		"last_name": usr.last_name,
+		"phone": usr.phone_number,
+	})
+	user.append("roles", {"role": "LH User"})
+	user.insert()
+	usr.db_set("user_id", user.name)
 
-    usr.db_set("user_id", user.name)
-    usr.save()
-    return user.name
+	return user.name
+
+@frappe.whitelist()
+def enable_user(user_email):
+	#to call after the user successfully sets their password
+	if not frappe.db.exists("User", user_email):
+		frappe.throw(frappe._("User {0} not found").format(user_email))
+
+	user = frappe.get_doc("User", user_email)
+	user.enabled = 1
+	user.save(ignore_permissions=True)
+	return {"enabled": True}
