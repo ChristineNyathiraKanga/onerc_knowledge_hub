@@ -20,5 +20,6 @@ export default defineConfig({
 		outDir: '../onerc_knowledge_hub/public/ans-hub',
 		emptyOutDir: true,
 		target: 'es2015',
+		cssMinify: false, // Disable CSS minification to avoid lightningcss errors with invalid CSS functions
 	},
 });
