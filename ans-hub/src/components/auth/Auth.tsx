@@ -8,7 +8,16 @@ import { useFrappeGetCall } from "frappe-react-sdk";
  */
 interface AuthProps {
   onSignIn?: (credentials: { email: string; password: string }) => void;
-  onSignUp?: (userData: { name: string; email: string; jobTitle: string; nationalSociety: string; gender: string }) => void;
+  onSignUp?: (userData: {
+    first_name: string;
+    last_name: string;
+    preferred_contact_email: string;
+    phone_number: string;
+    position: string;
+    national_society: string;
+    primary_language: string;
+    gender: string;
+  }) => void;
 }
 
 export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
@@ -20,12 +29,37 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
     "onerc_knowledge_hub.api.national_society.get_national_societies"
   );
 
+  // Fetch languages
+  const { data: languages, isLoading: loadingLanguages } = useFrappeGetCall(
+    "frappe.client.get_list",
+    {
+      doctype: "Language",
+      fields: ["name", "language_name"],
+      limit_page_length: 0,
+      order_by: "language_name asc"
+    }
+  );
+
+  // Fetch designations (positions)
+  const { data: designations, isLoading: loadingDesignations } = useFrappeGetCall(
+    "frappe.client.get_list",
+    {
+      doctype: "Designation",
+      fields: ["name"],
+      limit_page_length: 0,
+      order_by: "name asc"
+    }
+  );
+
   // Sign-up form state
   const [signUpData, setSignUpData] = useState({
-    name: "",
-    email: "",
-    jobTitle: "",
-    nationalSociety: "",
+    first_name: "",
+    last_name: "",
+    preferred_contact_email: "",
+    phone_number: "",
+    position: "",
+    national_society: "",
+    primary_language: "",
     gender: "",
   });
 
@@ -88,15 +122,30 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
 
               <div className="ma-field">
                 <label className="ma-label">
-                  Full Name
+                  First Name
                 </label>
                 <input
                   className="ma-input"
                   type="text"
-                  placeholder="Enter your name"
-                  value={signUpData.name}
+                  placeholder="Enter your first name"
+                  value={signUpData.first_name}
                   onChange={(e) =>
-                    setSignUpData({ ...signUpData, name: e.target.value })
+                    setSignUpData({ ...signUpData, first_name: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="ma-field">
+                <label className="ma-label">
+                  Last Name
+                </label>
+                <input
+                  className="ma-input"
+                  type="text"
+                  placeholder="Enter your last name"
+                  value={signUpData.last_name}
+                  onChange={(e) =>
+                    setSignUpData({ ...signUpData, last_name: e.target.value })
                   }
                   required
                 />
@@ -109,27 +158,48 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                   className="ma-input"
                   type="email"
                   placeholder="you@somewhere.com"
-                  value={signUpData.email}
+                  value={signUpData.preferred_contact_email}
                   onChange={(e) =>
-                    setSignUpData({ ...signUpData, email: e.target.value })
+                    setSignUpData({ ...signUpData, preferred_contact_email: e.target.value })
                   }
                   required
                 />
               </div>
               <div className="ma-field">
                 <label className="ma-label">
-                  Job Title
+                  Phone Number
                 </label>
                 <input
                   className="ma-input"
-                  type="text"
-                  placeholder="Your position"
-                  value={signUpData.jobTitle}
+                  type="tel"
+                  placeholder="+1234567890"
+                  value={signUpData.phone_number}
                   onChange={(e) =>
-                    setSignUpData({ ...signUpData, jobTitle: e.target.value })
+                    setSignUpData({ ...signUpData, phone_number: e.target.value })
                   }
                   required
                 />
+              </div>
+              <div className="ma-field">
+                <label className="ma-label">
+                  Position
+                </label>
+                <select
+                  className="ma-input"
+                  value={signUpData.position}
+                  onChange={(e) =>
+                    setSignUpData({ ...signUpData, position: e.target.value })
+                  }
+                  required
+                  disabled={loadingDesignations}
+                >
+                  <option value="">Select your position</option>
+                  {designations?.message?.map((designation: any) => (
+                    <option key={designation.name} value={designation.name}>
+                      {designation.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="ma-field">
                 <label className="ma-label">
@@ -137,9 +207,9 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                 </label>
                 <select
                   className="ma-input"
-                  value={signUpData.nationalSociety}
+                  value={signUpData.national_society}
                   onChange={(e) =>
-                    setSignUpData({ ...signUpData, nationalSociety: e.target.value })
+                    setSignUpData({ ...signUpData, national_society: e.target.value })
                   }
                   required
                   disabled={loadingSocieties}
@@ -150,6 +220,27 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                   {nationalSocieties?.message?.map((society: { name: string; full_official_name: string; short_name: string; country: string }) => (
                     <option key={society.name} value={society.name}>
                       {society.full_official_name} {society.country ? `(${society.country})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="ma-field">
+                <label className="ma-label">
+                  Primary Language
+                </label>
+                <select
+                  className="ma-input"
+                  value={signUpData.primary_language}
+                  onChange={(e) =>
+                    setSignUpData({ ...signUpData, primary_language: e.target.value })
+                  }
+                  required
+                  disabled={loadingLanguages}
+                >
+                  <option value="">Select your primary language</option>
+                  {languages?.message?.map((lang: any) => (
+                    <option key={lang.name} value={lang.name}>
+                      {lang.language_name || lang.name}
                     </option>
                   ))}
                 </select>

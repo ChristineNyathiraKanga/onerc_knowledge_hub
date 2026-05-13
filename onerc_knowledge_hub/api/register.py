@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.utils import validate_email_address, pas
+from frappe.utils import validate_email_address
 from frappe.utils.password import update_password
 
 @frappe.whitelist(allow_guest=True)
@@ -21,10 +21,10 @@ def register_localisation_hub_user(
 	# Validate email before touching the DB
 	validate_email_address(preferred_contact_email, True)
 
-	# Prevent duplicate email
+	# Prevent duplicate email (note: field name has typo in database - "prefered" not "preferred")
 	existing = frappe.db.get_value(
 		"Localisation Hub User",
-		{"preferred_contact_email": preferred_contact_email},
+		{"prefered_contact_email": preferred_contact_email},
 		"name",
 	)
 	if existing:
@@ -39,8 +39,8 @@ def register_localisation_hub_user(
 		"first_name": first_name,
 		"middle_name": middle_name or "",
 		"last_name": last_name,
-		"preferred_contact_email": preferred_contact_email,
-		"company_email": company_email or "",
+		"prefered_contact_email": preferred_contact_email,  # Note: typo in database field name
+		"company_email": company_email or preferred_contact_email,  # Use preferred email as fallback
 		"phone_number": phone_number or "",
 		"national_society": national_society,
 		"position": position,
@@ -55,6 +55,49 @@ def register_localisation_hub_user(
 		"full_name": doc.full_name,
 		"status": doc.status,
 	}
+
+
+@frappe.whitelist(allow_guest=True)
+def check_registration_status(email):
+	"""
+	Check the status of a Localisation Hub User registration by email.
+	Returns status information: Pending, Approved, Rejected
+	"""
+	if not email:
+		frappe.throw(frappe._("Email is required"))
+
+	validate_email_address(email, True)
+
+	# Note: field name has typo in database - "prefered" not "preferred"
+	lhu = frappe.db.get_value(
+		"Localisation Hub User",
+		{"prefered_contact_email": email},
+		["name", "status", "user_id", "full_name", "creation", "modified"],
+		as_dict=True,
+	)
+
+	if not lhu:
+		return {
+			"found": False,
+			"message": "No registration found with this email"
+		}
+
+	result = {
+		"found": True,
+		"name": lhu.name,
+		"full_name": lhu.full_name,
+		"status": lhu.status,
+		"created_on": lhu.creation,
+		"last_updated": lhu.modified,
+		"has_user_account": bool(lhu.user_id),
+	}
+
+	# If approved and has user account, check if it's activated
+	if lhu.status == "Approved" and lhu.user_id:
+		user_enabled = frappe.db.get_value("User", lhu.user_id, "enabled")
+		result["user_enabled"] = bool(user_enabled)
+
+	return result
 
 
 @frappe.whitelist(allow_guest=True)
