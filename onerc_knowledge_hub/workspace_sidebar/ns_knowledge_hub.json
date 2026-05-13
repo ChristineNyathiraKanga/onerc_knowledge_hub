@@ -19,8 +19,9 @@
  ],
  "modified": "2026-05-11 16:00:24.431398",
  "modified_by": "Administrator",
- "name": "Knowledge Hub",
+ "module": "Onerc Knowledge Hub",
+ "name": "NS Knowledge Hub",
  "owner": "Administrator",
  "standard": 1,
- "title": "Knowledge Hub"
+ "title": "NS Knowledge Hub"
 }

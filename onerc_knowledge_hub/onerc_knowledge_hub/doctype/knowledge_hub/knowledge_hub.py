@@ -7,11 +7,10 @@ from frappe.utils import today
 
 
 class KnowledgeHub(Document):
-
 	def validate(self):
 		if not self.file_attachment and not self.external_url:
 			frappe.throw("Either a file attachment or an external URL must be provided.")
-		if self.resource_category == "Tools & Templates" and not self.tools_subcategory:
+		if self.resource_type == "Tools & Templates" and not self.tools_subcategory:
 			frappe.throw("Tools & Templates resources require a subcategory.")
 
 	def before_save(self):
