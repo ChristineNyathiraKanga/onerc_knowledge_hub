@@ -18,6 +18,8 @@
   "last_name",
   "full_name",
   "column_break_9",
+  "salutation",
+  "gender",
   "position",
   "national_society",
   "personnel_type",
@@ -206,13 +208,25 @@
    "fieldname": "bio",
    "fieldtype": "Small Text",
    "label": "Bio"
+  },
+  {
+   "fieldname": "salutation",
+   "fieldtype": "Link",
+   "label": "Salutation",
+   "options": "Salutation"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
   }
  ],
  "icon": "fa fa-user",
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-13 12:45:18.928490",
+ "modified": "2026-05-13 16:13:48.168607",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "Localisation Hub User",
