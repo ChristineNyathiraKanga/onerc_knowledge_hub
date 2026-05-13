@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Newspaper,
@@ -16,7 +16,10 @@ import {
   PlusCircle,
   FileText,
   Image,
+  Users,
+  HelpCircle,
 } from "lucide-react";
+import { UserContext } from "../../contexts/UserContext";
 
 const navItems = [
   { path: "/", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -28,12 +31,18 @@ const navItems = [
 
 const createItems = [
   { path: "/create/knowledge", label: "Knowledge", icon: BookOpen },
-  { path: "/create/news", label: "News", icon: Newspaper },
-  { path: "/create/stories", label: "Stories", icon: Image },
+  { path: "/create/news", label: "News & Stories", icon: Newspaper },
+];
+
+const managementItems = [
+  { path: "/users", label: "Users", icon: Users },
+  { path: "/faqs", label: "FAQs", icon: HelpCircle },
 ];
 
 export default function DashboardLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { userData } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -48,9 +57,14 @@ export default function DashboardLayout() {
       : location.pathname === item.path ||
         location.pathname.startsWith(item.path + "/");
 
-  const allNavItems = [...navItems, ...createItems];
+  const allNavItems = [...navItems, ...createItems, ...managementItems];
   const currentPage =
     allNavItems.find((n) => isActive(n))?.label ?? "Overview";
+
+  // Get user initials
+  const userInitials = userData
+    ? `${userData.first_name?.[0] || ""}${userData.last_name?.[0] || ""}`.toUpperCase()
+    : "LA";
 
   return (
     <div className="flex h-screen bg-dash-bg overflow-hidden">
@@ -170,6 +184,49 @@ export default function DashboardLayout() {
               );
             })}
           </div>
+
+          {/* Management Section */}
+          <div className="space-y-0.5">
+            {!collapsed && (
+              <div className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest text-white/40">
+                Management
+              </div>
+            )}
+            {managementItems.map((item) => {
+              const active = isActive(item);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  title={collapsed ? item.label : undefined}
+                  className={[
+                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
+                    active
+                      ? "bg-dash-red/20 text-white"
+                      : "text-white/60 hover:bg-white/8 hover:text-white",
+                    collapsed ? "justify-center px-0" : "",
+                  ].join(" ")}
+                >
+                  {active && (
+                    <span className="absolute left-0 h-6 w-0.5 rounded-r bg-dash-red" />
+                  )}
+                  <item.icon
+                    className={[
+                      "h-4.5 w-4.5 shrink-0 transition-colors",
+                      active ? "text-dash-red" : "text-white/50 group-hover:text-white/80",
+                    ].join(" ")}
+                    style={{ height: "1.125rem", width: "1.125rem" }}
+                  />
+                  {!collapsed && (
+                    <span className="truncate">{item.label}</span>
+                  )}
+                  {active && !collapsed && (
+                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-dash-red" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* Collapse toggle (desktop only) */}
@@ -229,9 +286,13 @@ export default function DashboardLayout() {
             </button>
 
             {/* Avatar */}
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-dash-navy text-[11px] font-bold text-white select-none">
-              LA
-            </div>
+            <button
+              onClick={() => navigate("/profile")}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-dash-navy text-[11px] font-bold text-white select-none hover:bg-opacity-90 transition-all hover:ring-2 hover:ring-dash-red hover:ring-offset-2 cursor-pointer"
+              title="View Profile"
+            >
+              {userInitials}
+            </button>
           </div>
         </header>
 

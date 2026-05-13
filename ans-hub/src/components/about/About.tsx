@@ -128,13 +128,16 @@ export default function AboutPage() {
       {/* Hero */}
       <section
         className="relative overflow-hidden"
-        style={{ background: "var(--gradient-hero)" }}
+        style={{
+          backgroundImage: 'url(/assets/onerc_knowledge_hub/profile-cover.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, white 0, transparent 40%), radial-gradient(circle at 80% 60%, white 0, transparent 35%)",
-        }} />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
+        {/* Dark shadow overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/55" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-32 md:py-40">
           <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/90 backdrop-blur">
             About the Alliance
           </p>

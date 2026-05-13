@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
 import DashboardLayout from "./components/layout/DashboardLayout.tsx";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
 import LoginForm from "./components/auth/Login.tsx";
 import SetPassword from "./components/auth/SetPassword.tsx";
 import Home from "./components/dashboard/Home.tsx";
@@ -12,6 +13,9 @@ import EventsIndex from "./components/events/EventsIndex.tsx";
 import EventDetail from "./components/events/EventDetail.tsx";
 import Knowledge from "./components/knowledge/Knowledge.tsx";
 import Pillars from "./components/pillars/Pillars.tsx";
+import UsersManagement from "./components/users/UsersManagement.tsx";
+import FAQs from "./components/faqs/FAQs.tsx";
+import Profile from "./components/profile/Profile.tsx";
 import ErrorPage403 from "./components/error/ErrorPage403.tsx";
 import ErrorPage404 from "./components/error/ErrorPage404.tsx";
 
@@ -26,16 +30,21 @@ const AppRouter = () => {
         <Route path="/403" element={<ErrorPage403 />} />
         <Route path="/about" element={<AboutPage />} />
 
-        {/* Dashboard routes (with sidebar layout) */}
-        <Route element={<DashboardLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/news" element={<NewsIndex />} />
-          <Route path="/news/:slug" element={<NewsDetail />} />
-          <Route path="/events" element={<EventsIndex />} />
-          <Route path="/events/:slug" element={<EventDetail />} />
-          <Route path="/knowledge" element={<Knowledge />} />
-          <Route path="/pillars" element={<Pillars />} />
-          <Route path="*" element={<ErrorPage404 />} />
+        {/* Dashboard routes (with sidebar layout) - Protected */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/news" element={<NewsIndex />} />
+            <Route path="/news/:slug" element={<NewsDetail />} />
+            <Route path="/events" element={<EventsIndex />} />
+            <Route path="/events/:slug" element={<EventDetail />} />
+            <Route path="/knowledge" element={<Knowledge />} />
+            <Route path="/pillars" element={<Pillars />} />
+            <Route path="/users" element={<UsersManagement />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<ErrorPage404 />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
