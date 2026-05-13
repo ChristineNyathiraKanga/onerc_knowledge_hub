@@ -12,7 +12,8 @@
   {
    "fieldname": "expertise",
    "fieldtype": "Data",
-   "label": "Expertise"
+   "label": "Expertise",
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
