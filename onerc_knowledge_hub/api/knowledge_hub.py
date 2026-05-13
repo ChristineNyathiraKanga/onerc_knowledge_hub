@@ -8,7 +8,8 @@ def get_knowledge_hub_entries():
 		fields=[
 			"name",
 			"title",
-			"resource_category",
+			"category",
+			"resource_type",
 			"tools_subcategory",
 			"summary",
 			"description",
@@ -25,5 +26,19 @@ def get_knowledge_hub_entries():
 			"highlight_order",
 		],
 		order_by="published_date asc",
+	)
+	return entries
+
+
+@frappe.whitelist(allow_guest=True)
+def get_knowledge_hub_categories():
+	entries = frappe.get_all(
+		"Category",
+		fields=[
+			"name",
+			"category_name",
+			"description",
+		],
+		order_by="category_name asc",
 	)
 	return entries
