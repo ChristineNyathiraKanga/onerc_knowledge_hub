@@ -43,6 +43,13 @@ export default {
 				border: "oklch(0.9 0.012 250)",
 				input: "oklch(0.92 0.012 250)",
 				ring: "oklch(0.605 0.232 27)",
+				/* ── Dashboard tokens ── */
+				"dash-navy": "#011E41",
+				"dash-red": "#ee2435",
+				"dash-bg": "#f0f2f5",
+				"dash-border": "#e5e7eb",
+				"dash-card": "#ffffff",
+				/* ── Pillar tokens ── */
 				"pillar-leadership": {
 					DEFAULT: "oklch(0.45 0.18 300)",
 					foreground: "oklch(0.98 0 0)",
