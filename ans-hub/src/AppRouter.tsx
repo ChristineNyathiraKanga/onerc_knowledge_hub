@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
 import DashboardLayout from "./components/layout/DashboardLayout.tsx";
 import LoginForm from "./components/auth/Login.tsx";
+import SetPassword from "./components/auth/SetPassword.tsx";
 import Home from "./components/dashboard/Home.tsx";
 import AboutPage from "./components/about/About.tsx";
 import PendingApprovalPage from "./components/pending-approval/PendingApproval.tsx";
@@ -20,6 +21,7 @@ const AppRouter = () => {
       <Route element={<App />}>
         {/* Standalone routes (no sidebar) */}
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/set-password" element={<SetPassword />} />
         <Route path="/pending-approval" element={<PendingApprovalPage />} />
         <Route path="/403" element={<ErrorPage403 />} />
         <Route path="/about" element={<AboutPage />} />

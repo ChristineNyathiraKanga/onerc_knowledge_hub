@@ -11,13 +11,14 @@ from frappe.utils.password import update_password
 def register_localisation_hub_user(
 	first_name,
 	last_name,
-	company_email,
 	national_society,
 	middle_name=None,
 	salutation=None,
 	gender=None,
 	phone_number=None,
 	prefered_contact_email=None,
+	preferred_contact_email=None,
+	company_email=None,
 	position=None,
 	personnel_type=None,
 	primary_language=None,
@@ -25,23 +26,26 @@ def register_localisation_hub_user(
 	other_languages=None,
 	expertise=None,
 ):
-	
+
+	# Use whichever email field is provided (frontend sends preferred_contact_email)
+	email = preferred_contact_email or prefered_contact_email or company_email
+
+	if not email:
+		frappe.throw(frappe._("Email is required"))
+
 	# Validate required email
-	validate_email_address(company_email, True)
+	validate_email_address(email, True)
 
-	if prefered_contact_email:
-		validate_email_address(prefered_contact_email, True)
-
-	# Prevent duplicate emails
+	# Prevent duplicate email (note: field name has typo in database - "prefered" not "preferred")
 	existing = frappe.db.get_value(
 		"Localisation Hub User",
-		{"company_email": company_email},
+		{"prefered_contact_email": email},
 		"name",
 	)
 	if existing:
 		frappe.throw(
 			frappe._("A registration with email {0} already exists ({1}).").format(
-				company_email, existing
+				email, existing
 			)
 		)
 
@@ -52,8 +56,8 @@ def register_localisation_hub_user(
 		"middle_name": middle_name or "",
 		"last_name": last_name,
 		"gender": gender,
-		"company_email": company_email,
-		"prefered_contact_email": prefered_contact_email or "",
+		"company_email": company_email or email,
+		"prefered_contact_email": email,
 		"phone_number": phone_number or "",
 		"national_society": national_society,
 		"position": position,
@@ -87,6 +91,49 @@ def register_localisation_hub_user(
 
 
 #Frappe User created after admin approves and user sets password
+@frappe.whitelist(allow_guest=True)
+def check_registration_status(email):
+	"""
+	Check the status of a Localisation Hub User registration by email.
+	Returns status information: Pending, Approved, Rejected
+	"""
+	if not email:
+		frappe.throw(frappe._("Email is required"))
+
+	validate_email_address(email, True)
+
+	# Note: field name has typo in database - "prefered" not "preferred"
+	lhu = frappe.db.get_value(
+		"Localisation Hub User",
+		{"prefered_contact_email": email},
+		["name", "status", "user_id", "full_name", "creation", "modified"],
+		as_dict=True,
+	)
+
+	if not lhu:
+		return {
+			"found": False,
+			"message": "No registration found with this email"
+		}
+
+	result = {
+		"found": True,
+		"name": lhu.name,
+		"full_name": lhu.full_name,
+		"status": lhu.status,
+		"created_on": lhu.creation,
+		"last_updated": lhu.modified,
+		"has_user_account": bool(lhu.user_id),
+	}
+
+	# If approved and has user account, check if it's activated
+	if lhu.status == "Approved" and lhu.user_id:
+		user_enabled = frappe.db.get_value("User", lhu.user_id, "enabled")
+		result["user_enabled"] = bool(user_enabled)
+
+	return result
+
+
 @frappe.whitelist(allow_guest=True)
 def set_password_and_activate(localisation_hub_user, new_password):
 	if not localisation_hub_user:

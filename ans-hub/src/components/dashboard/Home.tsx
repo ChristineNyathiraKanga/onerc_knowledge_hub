@@ -13,7 +13,11 @@ import {
   Sparkles,
   Target,
   Zap,
+  HelpCircle,
+  Plus,
+  Minus,
 } from "lucide-react";
+import { useState } from "react";
 import { news, events, publications, pillarColor } from "../../lib/site-data";
 
 const stats = [
@@ -28,10 +32,42 @@ const quickActions = [
   { label: "Share Story", icon: Sparkles, path: "/create/stories", color: "bg-pink-500" },
 ];
 
+const faqs = [
+  {
+    question: "How do I access knowledge resources?",
+    answer: "Navigate to the Knowledge Hub section from the sidebar. You can browse, search, and filter resources by category, pillar, or file type. Click on any resource to view details and download."
+  },
+  {
+    question: "How can I share content with the network?",
+    answer: "Use the 'Create' section in the sidebar to add knowledge resources, news, or stories. Fill in the required details and submit for review. Your content will be published after admin approval."
+  },
+  {
+    question: "What are the four pillars of localization?",
+    answer: "The four pillars are: 1) Funding - Direct and quality funding for local actors, 2) Partnerships - Equitable partnerships with mutual accountability, 3) Capacity - Long-term investment in local capacities, and 4) Coordination - Meaningful participation in coordination mechanisms."
+  },
+  {
+    question: "How do I register for upcoming events?",
+    answer: "Click on any event from the Upcoming Events section or visit the Events page. Each event detail page has a registration button or link. You'll receive a confirmation email with event details and joining instructions."
+  },
+  {
+    question: "Who can join the Africa Localisation Hub?",
+    answer: "The hub is primarily for National Society staff and volunteers across Africa. Consortium partners and authorized personnel can also access the platform after approval by administrators."
+  },
+  {
+    question: "How do I update my profile information?",
+    answer: "Click on your avatar in the top right corner and select 'Profile Settings'. You can update your contact information, position, national society affiliation, and notification preferences."
+  },
+];
+
 export default function Home() {
   const recentNews = news.slice(0, 3);
   const upcomingEvents = events.slice(0, 4);
   const featuredPubs = publications.slice(0, 4);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
 
   return (
     <div className="min-h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 p-6 space-y-8">
@@ -276,6 +312,83 @@ export default function Home() {
               </button>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── FAQ Section ── */}
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100">
+              <HelpCircle className="h-5 w-5 text-orange-600" />
+            </div>
+            <div>
+              <h2 className="font-display text-xl font-semibold text-gray-900">Frequently Asked Questions</h2>
+              <p className="text-xs text-gray-500">Quick answers to common questions</p>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Accordion */}
+        <div className="space-y-3">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm transition-all duration-300"
+            >
+              <button
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+              >
+                <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
+                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all duration-300 ${
+                  openFaqIndex === index
+                    ? "bg-orange-100 text-orange-600 rotate-180"
+                    : "bg-gray-100 text-gray-400"
+                }`}>
+                  {openFaqIndex === index ? (
+                    <Minus className="h-4 w-4" />
+                  ) : (
+                    <Plus className="h-4 w-4" />
+                  )}
+                </div>
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openFaqIndex === index ? "max-h-96" : "max-h-0"
+                }`}
+              >
+                <div className="px-5 pb-5 pt-0">
+                  <div className="text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+                    {faq.answer}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Help Footer */}
+        <div className="rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200/50 p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500 text-white shadow-lg">
+              <HelpCircle className="h-6 w-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900 mb-1">Still have questions?</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Our support team is here to help you with any questions or issues you may have.
+              </p>
+              <a
+                href="mailto:support@ifrc.org"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-sm hover:shadow-md"
+              >
+                Contact Support
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
