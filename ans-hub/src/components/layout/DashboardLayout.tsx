@@ -13,15 +13,23 @@ import {
   Search,
   Menu,
   X,
+  PlusCircle,
+  FileText,
+  Image,
 } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Overview", icon: LayoutDashboard, exact: true },
   { path: "/news", label: "News & Stories", icon: Newspaper },
   { path: "/events", label: "Events", icon: Calendar },
-  { path: "/knowledge", label: "Knowledge", icon: BookOpen },
+  { path: "/knowledge", label: "Knowledge Hub", icon: BookOpen },
   { path: "/pillars", label: "Pillars", icon: Layers },
-  { path: "/about", label: "About", icon: Info },
+];
+
+const createItems = [
+  { path: "/create/knowledge", label: "Knowledge", icon: BookOpen },
+  { path: "/create/news", label: "News", icon: Newspaper },
+  { path: "/create/stories", label: "Stories", icon: Image },
 ];
 
 export default function DashboardLayout() {
@@ -40,8 +48,9 @@ export default function DashboardLayout() {
       : location.pathname === item.path ||
         location.pathname.startsWith(item.path + "/");
 
+  const allNavItems = [...navItems, ...createItems];
   const currentPage =
-    navItems.find((n) => isActive(n))?.label ?? "Overview";
+    allNavItems.find((n) => isActive(n))?.label ?? "Overview";
 
   return (
     <div className="flex h-screen bg-dash-bg overflow-hidden">
@@ -80,41 +89,87 @@ export default function DashboardLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-0.5">
-          {navItems.map((item) => {
-            const active = isActive(item);
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                title={collapsed ? item.label : undefined}
-                className={[
-                  "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
-                  active
-                    ? "bg-dash-red/20 text-white"
-                    : "text-white/60 hover:bg-white/8 hover:text-white",
-                  collapsed ? "justify-center px-0" : "",
-                ].join(" ")}
-              >
-                {active && (
-                  <span className="absolute left-0 h-6 w-0.5 rounded-r bg-dash-red" />
-                )}
-                <item.icon
+        <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-4">
+          {/* Main Navigation */}
+          <div className="space-y-0.5">
+            {navItems.map((item) => {
+              const active = isActive(item);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  title={collapsed ? item.label : undefined}
                   className={[
-                    "h-4.5 w-4.5 shrink-0 transition-colors",
-                    active ? "text-dash-red" : "text-white/50 group-hover:text-white/80",
+                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
+                    active
+                      ? "bg-dash-red/20 text-white"
+                      : "text-white/60 hover:bg-white/8 hover:text-white",
+                    collapsed ? "justify-center px-0" : "",
                   ].join(" ")}
-                  style={{ height: "1.125rem", width: "1.125rem" }}
-                />
-                {!collapsed && (
-                  <span className="truncate">{item.label}</span>
-                )}
-                {active && !collapsed && (
-                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-dash-red" />
-                )}
-              </Link>
-            );
-          })}
+                >
+                  {active && (
+                    <span className="absolute left-0 h-6 w-0.5 rounded-r bg-dash-red" />
+                  )}
+                  <item.icon
+                    className={[
+                      "h-4.5 w-4.5 shrink-0 transition-colors",
+                      active ? "text-dash-red" : "text-white/50 group-hover:text-white/80",
+                    ].join(" ")}
+                    style={{ height: "1.125rem", width: "1.125rem" }}
+                  />
+                  {!collapsed && (
+                    <span className="truncate">{item.label}</span>
+                  )}
+                  {active && !collapsed && (
+                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-dash-red" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Create Section */}
+          <div className="space-y-0.5">
+            {!collapsed && (
+              <div className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest text-white/40">
+                Create
+              </div>
+            )}
+            {createItems.map((item) => {
+              const active = isActive(item);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  title={collapsed ? item.label : undefined}
+                  className={[
+                    "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150",
+                    active
+                      ? "bg-dash-red/20 text-white"
+                      : "text-white/60 hover:bg-white/8 hover:text-white",
+                    collapsed ? "justify-center px-0" : "",
+                  ].join(" ")}
+                >
+                  {active && (
+                    <span className="absolute left-0 h-6 w-0.5 rounded-r bg-dash-red" />
+                  )}
+                  <item.icon
+                    className={[
+                      "h-4.5 w-4.5 shrink-0 transition-colors",
+                      active ? "text-dash-red" : "text-white/50 group-hover:text-white/80",
+                    ].join(" ")}
+                    style={{ height: "1.125rem", width: "1.125rem" }}
+                  />
+                  {!collapsed && (
+                    <span className="truncate">{item.label}</span>
+                  )}
+                  {active && !collapsed && (
+                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-dash-red" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* Collapse toggle (desktop only) */}
