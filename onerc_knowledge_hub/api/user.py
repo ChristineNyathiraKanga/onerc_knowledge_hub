@@ -1,6 +1,6 @@
 import frappe
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_user_details() -> dict:
     name = frappe.session.user
     user = frappe.get_doc("User", name)

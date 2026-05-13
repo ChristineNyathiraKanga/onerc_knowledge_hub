@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Check, Clock, Mail, ShieldCheck, LogOut, HelpCircle } from "lucide-react";
 
 const steps = [
@@ -29,7 +29,8 @@ const steps = [
 ];
 
 export default function PendingApprovalPage() {
-  const email = "petumyg@mailinator.com";
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email") || "your-email@example.com";
 
   return (
     <main className="min-h-screen bg-background text-foreground">

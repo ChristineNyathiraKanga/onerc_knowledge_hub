@@ -30,26 +30,24 @@ export default function LoginForm() {
   const handleSignUp = async (userData: {
     name: string;
     email: string;
-    password: string;
     jobTitle: string;
     nationalSociety: string;
+    gender: string;
   }) => {
     if (isLoading) return;
 
     setIsLoading(true);
     try {
-      // For now, show a message that sign-up is not yet implemented
-      // You can implement the actual sign-up API call here
-      toast.info(
-        "Sign-up functionality will be available soon. Please contact your administrator for account creation."
-      );
-
       // TODO: Implement sign-up API call
       // Example:
       // await frappe.call({
-      //   method: "onerc_knowledge_hub.api.user.create_user",
+      //   method: "onerc_knowledge_hub.api.user.register_user",
       //   args: userData
       // });
+
+      // Redirect to pending approval page with email parameter
+      toast.success("Registration submitted successfully!");
+      navigate(`/pending-approval?email=${encodeURIComponent(userData.email)}`);
     } catch (error: any) {
       toast.error(error.message || "Failed to create account. Please try again.");
     } finally {
