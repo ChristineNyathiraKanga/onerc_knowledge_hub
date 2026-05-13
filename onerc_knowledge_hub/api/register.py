@@ -11,13 +11,14 @@ from frappe.utils.password import update_password
 def register_localisation_hub_user(
 	first_name,
 	last_name,
-	company_email,
 	national_society,
 	middle_name=None,
 	salutation=None,
 	gender=None,
 	phone_number=None,
 	prefered_contact_email=None,
+	preferred_contact_email=None,
+	company_email=None,
 	position=None,
 	personnel_type=None,
 	primary_language=None,
@@ -25,20 +26,26 @@ def register_localisation_hub_user(
 	other_languages=None,
 	expertise=None,
 ):
-	
+
+	# Use whichever email field is provided (frontend sends preferred_contact_email)
+	email = preferred_contact_email or prefered_contact_email or company_email
+
+	if not email:
+		frappe.throw(frappe._("Email is required"))
+
 	# Validate required email
-	validate_email_address(company_email, True)
+	validate_email_address(email, True)
 
 	# Prevent duplicate email (note: field name has typo in database - "prefered" not "preferred")
 	existing = frappe.db.get_value(
 		"Localisation Hub User",
-		{"prefered_contact_email": preferred_contact_email},
+		{"prefered_contact_email": email},
 		"name",
 	)
 	if existing:
 		frappe.throw(
 			frappe._("A registration with email {0} already exists ({1}).").format(
-				company_email, existing
+				email, existing
 			)
 		)
 
@@ -49,8 +56,8 @@ def register_localisation_hub_user(
 		"middle_name": middle_name or "",
 		"last_name": last_name,
 		"gender": gender,
-		"company_email": company_email,
-		"prefered_contact_email": prefered_contact_email or "",
+		"company_email": company_email or email,
+		"prefered_contact_email": email,
 		"phone_number": phone_number or "",
 		"national_society": national_society,
 		"position": position,
