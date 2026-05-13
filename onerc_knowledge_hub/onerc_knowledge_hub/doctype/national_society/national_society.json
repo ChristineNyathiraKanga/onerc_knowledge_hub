@@ -12,7 +12,7 @@
   "logo",
   "column_break_shct",
   "country",
-  "region",
+  "region_name",
   "banner_image",
   "section_break_viwn",
   "about",
@@ -187,12 +187,6 @@
    "options": "Social Media Links"
   },
   {
-   "fieldname": "region",
-   "fieldtype": "Link",
-   "label": "Region",
-   "options": "Region"
-  },
-  {
    "fieldname": "national_society_name",
    "fieldtype": "Data",
    "in_filter": 1,
@@ -213,12 +207,18 @@
    "fieldname": "organization_size_update_date",
    "fieldtype": "Date",
    "label": "Updated On"
+  },
+  {
+   "fieldname": "region_name",
+   "fieldtype": "Link",
+   "label": "Region",
+   "options": "Region"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-13 12:06:13.994781",
+ "modified": "2026-05-13 15:00:37.907335",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "National Society",
