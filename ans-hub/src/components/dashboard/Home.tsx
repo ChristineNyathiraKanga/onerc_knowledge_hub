@@ -1,214 +1,214 @@
 import { Link } from "react-router-dom";
+import {
+  ArrowRight, ArrowUpRight, Calendar, MapPin, Newspaper,
+  Globe2, TrendingUp, Sparkles, Play, Mail, ChevronRight,
+} from "lucide-react";
+import { Button } from "../ui/button";
+import { SiteHeader, SiteFooter } from "../layout/SiteHeader";
+import { news, events, featured, pillarColor } from "../../lib/site-data";
+
+const stats = [
+  { value: "10", label: "African National Societies" },
+  { value: "7", label: "Consortium Partners" },
+  { value: "4", label: "Strategic Pillars" },
+  { value: "120+", label: "Peer exchanges hosted" },
+];
 
 const Home = () => {
+  const topNews = news.slice(0, 4);
+  const topEvents = events.slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans">
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 flex items-center justify-center">
-            <svg
-              className="w-full h-full text-[#EE1C25]"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M37.5 12.5H62.5V37.5H87.5V62.5H62.5V87.5H37.5V62.5H12.5V37.5H37.5V12.5Z"
-                fill="currentColor"
-              />
-            </svg>
+    <div className="min-h-screen bg-white">
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 70% 70%, white 1px, transparent 1px)", backgroundSize: "48px 48px, 64px 64px" }} />
+        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-red-500/30 blur-3xl" />
+        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-red-500/20 blur-3xl" />
+
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 md:py-28 lg:grid-cols-12 lg:py-32">
+          <div className="lg:col-span-7">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5" />
+              MOFA II · Peer-to-Peer Learning Platform
+            </div>
+            <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
+              A journey toward<br />
+              <span className="italic text-red-500">self-reliance</span>,<br />
+              led from Africa.
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-white/80">
+              The Localisation Alliance brings together 10 African National Societies and 7 Consortium Partners — sharing leadership, finance, and frontline practice to build stronger, locally led humanitarian systems.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/about">
+                <Button size="lg" className="bg-red-500 text-white hover:bg-red-600">
+                  Discover the Alliance <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link to="/news">
+                <Button size="lg" variant="outline" className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white">
+                  <Play className="mr-1 h-4 w-4" /> Latest stories
+                </Button>
+              </Link>
+            </div>
           </div>
-          <span className="text-xl font-black tracking-tighter text-gray-900 uppercase">
-            Society Hub
-          </span>
-        </div>
-        <div className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-600">
-          <a
-            href="#features"
-            className="hover:text-[#EE1C25] transition-colors"
-          >
-            Features
-          </a>
-          <a href="#network" className="hover:text-[#EE1C25] transition-colors">
-            National Societies
-          </a>
-          <a
-            href="#resources"
-            className="hover:text-[#EE1C25] transition-colors"
-          >
-            Resources
-          </a>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link
-            to="/login"
-            className="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-gray-900"
-          >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-[#EE1C25] text-white px-5 py-2.5 rounded text-xs font-bold uppercase tracking-widest hover:bg-[#d11920] transition-all shadow-md"
-          >
-            Join Network
-          </Link>
-        </div>
-      </nav>
 
-      <header className="px-6 py-24 md:py-32 max-w-7xl mx-auto text-center">
-        <div className="inline-block px-4 py-1.5 bg-red-50 text-[#EE1C25] text-[10px] font-black uppercase tracking-[0.2em] rounded mb-8 border border-red-100">
-          Global Humanitarian Network
-        </div>
-        <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-[0.95] mb-8 tracking-tighter">
-          COOPERATION <br />
-          <span className="text-[#EE1C25]">WITHOUT BORDERS.</span>
-        </h1>
-        <p className="text-lg font-medium text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed">
-          The official peer-to-peer exchange for National Societies. Share
-          intelligence, coordinate logistics, and build a resilient
-          international community.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-          <button className="w-full sm:w-auto px-10 py-4 bg-gray-900 text-white text-xs font-bold uppercase tracking-widest rounded hover:bg-gray-800 transition-all shadow-lg">
-            Access Portal
-          </button>
-          <button className="w-full sm:w-auto px-10 py-4 border-2 border-gray-200 text-gray-900 text-xs font-bold uppercase tracking-widest rounded hover:bg-gray-50 transition-all">
-            Documentation
-          </button>
-        </div>
-      </header>
+          <div className="lg:col-span-5">
+            <Link to={`/news/${featured.slug}`} className="block rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-md shadow-2xl transition-all hover:border-red-500/40 hover:bg-white/10">
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-2 rounded-full bg-red-500/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                  Live · {featured.tag}
+                </span>
+                <span className="text-xs text-white/60">{featured.date}</span>
+              </div>
+              <h3 className="mt-4 font-display text-2xl font-semibold leading-tight">{featured.title}</h3>
+              <p className="mt-3 text-sm text-white/70">{featured.excerpt}</p>
+              <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+                <div className="flex items-center gap-2 text-xs text-white/70"><MapPin className="h-3.5 w-3.5" /> {featured.place}</div>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-red-400">Read story <ArrowUpRight className="h-3.5 w-3.5" /></span>
+              </div>
+            </Link>
 
-      <section className="border-y border-gray-100 bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12">
-          {[
-            { label: "Societies", value: "150+" },
-            { label: "Members", value: "12k" },
-            { label: "Resources", value: "45k" },
-            { label: "Deployments", value: "800" },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl font-black text-gray-900 tracking-tighter">
-                {stat.value}
-              </div>
-              <div className="text-[10px] font-black text-[#EE1C25] uppercase tracking-[0.2em] mt-2">
-                {stat.label}
-              </div>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {stats.slice(0, 2).map((s) => (
+                <div key={s.label} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                  <div className="font-display text-3xl font-bold">{s.value}</div>
+                  <div className="text-xs text-white/70">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-gray-200 bg-gray-50">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-gray-200 md:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.label} className="bg-white px-6 py-8 text-center">
+              <div className="font-display text-4xl font-bold text-gray-900">{s.value}</div>
+              <div className="mt-1 text-xs uppercase tracking-widest text-gray-600">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="features" className="py-32 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
-          <div className="max-w-xl">
-            <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter mb-4">
-              Strategic Collaboration
-            </h2>
-            <div className="w-20 h-2 bg-[#EE1C25] rounded-full"></div>
+      {/* News */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+              <Newspaper className="h-3.5 w-3.5" /> Latest News
+            </div>
+            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl">From the field, across the network</h2>
           </div>
-          <p className="text-gray-500 font-medium max-w-sm">
-            Leveraging technology to unify humanitarian efforts and streamline
-            communication.
-          </p>
+          <Link to="/news" className="hidden items-center gap-1 text-sm font-medium text-red-500 hover:underline md:inline-flex">
+            All news <ChevronRight className="h-4 w-4" />
+          </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-16">
-          <div className="group">
-            <div className="w-14 h-14 bg-red-50 text-[#EE1C25] rounded-xl flex items-center justify-center mb-8 group-hover:bg-[#EE1C25] group-hover:text-white transition-all shadow-sm">
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {topNews.map((n) => (
+            <Link key={n.slug} to={`/news/${n.slug}`} className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:-translate-y-1 hover:border-red-500/40 shadow-md">
+              <div className={`relative h-32 ${pillarColor[n.color]}`}>
+                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+                <span className="absolute bottom-3 left-4 text-[11px] font-semibold uppercase tracking-widest text-white">{n.tag}</span>
+              </div>
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="font-display text-lg font-semibold leading-snug text-gray-900 group-hover:text-red-500">{n.title}</h3>
+                <div className="mt-auto flex items-center justify-between pt-5 text-xs text-gray-600">
+                  <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {n.date}</span>
+                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {n.place}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Events + Pillars */}
+      <section className="border-t border-gray-200 bg-gray-50">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+              <Calendar className="h-3.5 w-3.5" /> Upcoming Events
             </div>
-            <h3 className="text-lg font-black uppercase tracking-tight mb-4 text-gray-900">
-              Peer Exchange
-            </h3>
-            <p className="text-gray-500 leading-relaxed text-sm font-medium">
-              Real-time collaboration across sectors. Solve complex logistics
-              and administrative hurdles via direct peer intelligence.
-            </p>
+            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900">Convening the network</h2>
+            <p className="mt-3 max-w-xl text-gray-600">Webinars, working groups and in-person gatherings that move localisation forward.</p>
+
+            <div className="mt-8 space-y-3">
+              {topEvents.map((e) => (
+                <Link key={e.slug} to={`/events/${e.slug}`} className="group flex items-center gap-5 rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-red-500/50 hover:shadow-lg">
+                  <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 text-white">
+                    <span className="font-display text-2xl font-bold leading-none">{e.day}</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-red-400">{e.month}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-lg font-semibold text-gray-900 group-hover:text-red-500">{e.title}</h3>
+                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-600">
+                      <span>{e.type}</span><span>·</span><span>{e.time}</span>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-5 w-5 text-gray-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-red-500" />
+                </Link>
+              ))}
+              <Link to="/events" className="inline-flex items-center gap-1 pt-2 text-sm font-medium text-red-500 hover:underline">
+                View all events <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
-          <div className="group">
-            <div className="w-14 h-14 bg-red-50 text-[#EE1C25] rounded-xl flex items-center justify-center mb-8 group-hover:bg-[#EE1C25] group-hover:text-white transition-all shadow-sm">
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
-                />
-              </svg>
+          <div className="lg:col-span-2">
+            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+              <TrendingUp className="h-3.5 w-3.5" /> Four Pillars
             </div>
-            <h3 className="text-lg font-black uppercase tracking-tight mb-4 text-gray-900">
-              Unified Registry
-            </h3>
-            <p className="text-gray-500 leading-relaxed text-sm font-medium">
-              A centralized repository for governance documents, response
-              protocols, and shared training materials.
-            </p>
-          </div>
-
-          <div className="group">
-            <div className="w-14 h-14 bg-red-50 text-[#EE1C25] rounded-xl flex items-center justify-center mb-8 group-hover:bg-[#EE1C25] group-hover:text-white transition-all shadow-sm">
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04a11.73 11.73 0 00-1.515 8.803c1.302 4.965 5.842 8.147 10.133 8.147 4.291 0 8.831-3.182 10.133-8.147a11.73 11.73 0 00-1.515-8.803z"
-                />
-              </svg>
+            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900">How we work</h2>
+            <div className="mt-6 space-y-3">
+              {[
+                { name: "Leadership & Governance", color: "leadership", lead: "IFRC" },
+                { name: "Branch Development", color: "branch", lead: "IFRC" },
+                { name: "Resource Mobilisation", color: "resource", lead: "Swiss & Netherlands RC" },
+                { name: "Finance Development", color: "finance", lead: "NorCross" },
+              ].map((p) => (
+                <Link key={p.name} to="/pillars" className={`group relative block overflow-hidden rounded-xl p-5 ${pillarColor[p.color]}`}>
+                  <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10 blur-xl transition-all group-hover:scale-150" />
+                  <div className="relative">
+                    <div className="font-display text-lg font-semibold">{p.name}</div>
+                    <div className="mt-1 text-xs uppercase tracking-widest opacity-75">Led by {p.lead}</div>
+                  </div>
+                </Link>
+              ))}
             </div>
-            <h3 className="text-lg font-black uppercase tracking-tight mb-4 text-gray-900">
-              Secure Protocol
-            </h3>
-            <p className="text-gray-500 leading-relaxed text-sm font-medium">
-              Enterprise-grade encryption and strict member verification ensure
-              that communications remain within the network.
-            </p>
           </div>
         </div>
       </section>
 
-      <footer className="bg-gray-900 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-3">
-            <svg
-              className="w-8 h-8 text-[#EE1C25]"
-              viewBox="0 0 100 100"
-              fill="currentColor"
-            >
-              <path d="M37.5 12.5H62.5V37.5H87.5V62.5H62.5V87.5H37.5V62.5H12.5V37.5H37.5V12.5Z" />
-            </svg>
-            <span className="text-white font-black uppercase tracking-tighter">
-              Society Hub
-            </span>
+      {/* CTA */}
+      <section className="relative overflow-hidden bg-gray-900 text-white">
+        <div className="absolute -right-20 top-0 h-80 w-80 rounded-full bg-red-500/20 blur-3xl" />
+        <div className="absolute -bottom-20 left-0 h-80 w-80 rounded-full bg-red-500/10 blur-3xl" />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
+          <div>
+            <Globe2 className="h-10 w-10 text-red-500" />
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight md:text-5xl">Join a movement of African-led humanitarian renewal.</h2>
+            <p className="mt-4 max-w-lg text-white/75">Get the monthly briefing — peer stories, opportunities and learning resources from across the Alliance.</p>
           </div>
-          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">
-            © {new Date().getFullYear()} National Societies Interaction Hub
-          </div>
+          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+              <input type="email" placeholder="your.email@nationalsociety.org" className="h-12 w-full rounded-md border border-white/20 bg-white/10 pl-11 pr-4 text-sm text-white placeholder:text-white/50 backdrop-blur focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/40" />
+            </div>
+            <Button size="lg" className="h-12 bg-red-500 text-white hover:bg-red-600">
+              Subscribe <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
+          </form>
         </div>
-      </footer>
+      </section>
+
+      <SiteFooter />
     </div>
   );
 };
