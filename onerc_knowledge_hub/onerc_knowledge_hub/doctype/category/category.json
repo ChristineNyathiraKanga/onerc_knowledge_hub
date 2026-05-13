@@ -1,29 +1,34 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:region_name",
- "creation": "2026-05-13 11:24:25.413724",
+ "autoname": "field:category_name",
+ "creation": "2026-05-13 15:41:56.725402",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "region_name"
+  "category_name",
+  "description"
  ],
  "fields": [
   {
-   "default": "Africa",
-   "fieldname": "region_name",
+   "fieldname": "category_name",
    "fieldtype": "Data",
-   "label": "Region Name",
+   "label": "Category Name",
    "unique": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-13 14:59:30.708217",
+ "modified": "2026-05-13 16:08:33.634949",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
- "name": "Region",
+ "name": "Category",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

@@ -2,24 +2,32 @@
 # For license information, please see license.txt
 
 import frappe
+import json
 from frappe.utils import validate_email_address
 from frappe.utils.password import update_password
 
+#Creates a Localisation Hub User with status "Pending".
 @frappe.whitelist(allow_guest=True)
 def register_localisation_hub_user(
 	first_name,
 	last_name,
-	preferred_contact_email,
+	company_email,
+	national_society,
 	middle_name=None,
+	salutation=None,
+	gender=None,
 	phone_number=None,
-	company_email=None,
-	national_society=None,
+	prefered_contact_email=None,
 	position=None,
 	personnel_type=None,
 	primary_language=None,
+	bio=None,
+	other_languages=None,
+	expertise=None,
 ):
-	# Validate email before touching the DB
-	validate_email_address(preferred_contact_email, True)
+	
+	# Validate required email
+	validate_email_address(company_email, True)
 
 	# Prevent duplicate email (note: field name has typo in database - "prefered" not "preferred")
 	existing = frappe.db.get_value(
@@ -29,25 +37,43 @@ def register_localisation_hub_user(
 	)
 	if existing:
 		frappe.throw(
-			frappe._(
-				"A registration with email {0} already exists ({1})."
-			).format(preferred_contact_email, existing)
+			frappe._("A registration with email {0} already exists ({1}).").format(
+				company_email, existing
+			)
 		)
 
 	doc = frappe.get_doc({
 		"doctype": "Localisation Hub User",
+		"salutation": salutation,
 		"first_name": first_name,
 		"middle_name": middle_name or "",
 		"last_name": last_name,
-		"prefered_contact_email": preferred_contact_email,  # Note: typo in database field name
-		"company_email": company_email or preferred_contact_email,  # Use preferred email as fallback
+		"gender": gender,
+		"company_email": company_email,
+		"prefered_contact_email": prefered_contact_email or "",
 		"phone_number": phone_number or "",
 		"national_society": national_society,
 		"position": position,
 		"personnel_type": personnel_type,
 		"primary_language": primary_language,
+		"bio": bio or "",
+		"other_languages": [],
+		"expertise": [],
 		"status": "Pending",
 	})
+
+	# Table MultiSelect: other_languages — rows have field `language_name`
+	if other_languages:
+		langs = json.loads(other_languages) if isinstance(other_languages, str) else other_languages
+		for lang in langs:
+			doc.append("other_languages", {"language_name": lang})
+
+	# Table MultiSelect: expertise — rows have field `expertise`
+	if expertise:
+		exp_list = json.loads(expertise) if isinstance(expertise, str) else expertise
+		for exp in exp_list:
+			doc.append("expertise", {"expertise": exp})
+
 	doc.insert(ignore_permissions=True)
 
 	return {
@@ -57,6 +83,7 @@ def register_localisation_hub_user(
 	}
 
 
+#Frappe User created after admin approves and user sets password
 @frappe.whitelist(allow_guest=True)
 def check_registration_status(email):
 	"""
@@ -126,11 +153,91 @@ def set_password_and_activate(localisation_hub_user, new_password):
 	if user.enabled:
 		frappe.throw(frappe._("Account is already active"))
 
-	# Update password and enable the account
 	update_password(user.name, new_password)
-
 	user.enabled = 1
 	user.save(ignore_permissions=True)
 
 	return {"activated": True, "user": user.name}
 
+#update status of Localisation Hub User to Approved
+@frappe.whitelist()
+def approve_localisation_hub_user(name):
+	frappe.only_for("LH Admin", "System Manager")
+
+	lhu = frappe.get_doc("Localisation Hub User", name)
+	if lhu.status != "Pending":
+		frappe.throw(frappe._("Only users with Pending status can be approved"))
+
+	lhu.status = "Approved"
+	lhu.save(ignore_permissions=True)
+
+	return {"name": lhu.name, "status": lhu.status}
+
+# Link Lookup APIs
+@frappe.whitelist(allow_guest=True)
+def get_national_societies():
+	"""Returns all National Society records"""
+	return frappe.get_all(
+		"National Society",
+		fields=["name", "full_official_name", "short_name", "country"],
+		order_by="full_official_name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def get_languages():
+	"""Returns all Language records"""
+	return frappe.get_all(
+		"Language",
+		fields=["name", "language_name"],
+		order_by="language_name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def get_designations():
+	"""Returns all Designation records"""
+	return frappe.get_all(
+		"Designation",
+		fields=["name"],
+		order_by="name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def get_salutations():
+	"""Returns all Salutation records"""
+	return frappe.get_all(
+		"Salutation",
+		fields=["name"],
+		order_by="name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def get_genders():
+	"""Returns all Gender records"""
+	return frappe.get_all(
+		"Gender",
+		fields=["name"],
+		order_by="name asc",
+	)
+
+
+@frappe.whitelist(allow_guest=True)
+def get_expertise_options():
+	"""Returns all Expertise"""
+	return frappe.get_all(
+		"Expertise Selector",
+		fields=["name", "expertise"],
+		order_by="expertise asc",
+	)
+
+@frappe.whitelist(allow_guest=True)
+def get_other_languages():
+	"""Returns all Selector Language records"""
+	return frappe.get_all(
+		"Language Selector",
+		fields=["name", "language_name"],
+		order_by="language_name asc",
+	)

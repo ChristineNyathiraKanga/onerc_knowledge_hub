@@ -8,22 +8,34 @@
  "engine": "InnoDB",
  "field_order": [
   "title",
-  "resource_category",
+  "category",
+  "language",
+  "column_break_top",
+  "resource_type",
   "tools_subcategory",
+  "section_overview",
   "summary",
   "description",
   "section_content",
   "file_attachment",
+  "column_break_content",
   "external_url",
-  "language",
   "section_attribution",
   "contributing_ns",
+  "column_break_attrib",
   "uploaded_by",
+  "section_impact",
+  "report_impact",
+  "impact_metrics_section",
+  "metric_type",
+  "column_break_snxd",
   "section_status",
   "status",
   "published_date",
+  "column_break_status1",
   "view_count",
   "download_count",
+  "column_break_status2",
   "is_highlighted",
   "highlight_order"
  ],
@@ -36,19 +48,44 @@
    "reqd": 1
   },
   {
-   "fieldname": "resource_category",
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "language",
+   "fieldtype": "Link",
+   "label": "Language",
+   "options": "Language",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_top",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "resource_type",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Resource Category",
+   "label": "Resource type",
    "options": "\nPublication\nReport\nTools & Templates",
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.resource_category=='Tools & Templates'",
+   "depends_on": "eval:doc.resource_type=='Tools & Templates'",
    "fieldname": "tools_subcategory",
    "fieldtype": "Select",
    "label": "Tools Subcategory",
    "options": "\nStrategy Templates\nInstitutional Policy Templates\nTools & Frameworks\nProposal & Resource Mobilisation Templates"
+  },
+  {
+   "fieldname": "section_overview",
+   "fieldtype": "Section Break",
+   "label": "Overview"
   },
   {
    "fieldname": "summary",
@@ -72,16 +109,13 @@
    "label": "File Attachment"
   },
   {
+   "fieldname": "column_break_content",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "external_url",
    "fieldtype": "Data",
    "label": "External URL"
-  },
-  {
-   "fieldname": "language",
-   "fieldtype": "Link",
-   "label": "Language",
-   "options": "Language",
-   "reqd": 1
   },
   {
    "fieldname": "section_attribution",
@@ -90,11 +124,14 @@
   },
   {
    "fieldname": "contributing_ns",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
+   "ignore_user_permissions": 1,
    "label": "Contributing NS",
-   "options": "National Society",
-   "reqd": 1
+   "options": "National Society Detail"
+  },
+  {
+   "fieldname": "column_break_attrib",
+   "fieldtype": "Column Break"
   },
   {
    "default": "__user",
@@ -102,6 +139,33 @@
    "fieldtype": "Data",
    "label": "Uploaded By",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_impact",
+   "fieldtype": "Section Break",
+   "label": "Impact Reporting"
+  },
+  {
+   "default": "Yes",
+   "fieldname": "report_impact",
+   "fieldtype": "Select",
+   "label": "Do you want to report Impact?",
+   "options": "\nYes\nNo"
+  },
+  {
+   "depends_on": "eval:doc.report_impact == \"Yes\" ",
+   "fieldname": "impact_metrics_section",
+   "fieldtype": "Section Break",
+   "label": "Impact Metrics"
+  },
+  {
+   "fieldname": "metric_type",
+   "fieldtype": "Data",
+   "label": "Metric Type"
+  },
+  {
+   "fieldname": "column_break_snxd",
+   "fieldtype": "Column Break"
   },
   {
    "collapsible": 1,
@@ -124,6 +188,10 @@
    "read_only": 1
   },
   {
+   "fieldname": "column_break_status1",
+   "fieldtype": "Column Break"
+  },
+  {
    "default": "0",
    "fieldname": "view_count",
    "fieldtype": "Int",
@@ -136,6 +204,10 @@
    "fieldtype": "Int",
    "label": "Download Count",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_status2",
+   "fieldtype": "Column Break"
   },
   {
    "default": "0",
@@ -153,7 +225,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-12 15:33:49.499427",
+ "modified": "2026-05-13 15:47:20.978200",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "Knowledge Hub",
@@ -174,7 +246,7 @@
   }
  ],
  "row_format": "Dynamic",
- "search_fields": "title,contributing_ns,resource_category",
+ "search_fields": "title",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
