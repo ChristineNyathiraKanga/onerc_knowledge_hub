@@ -1,17 +1,18 @@
 {
-  "name": "anc-hub",
+  "name": "ans-hub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/onerc_knowledge_hub/anc-hub/ && yarn copy-html-entry",
+    "build": "vite build --base=/assets/onerc_knowledge_hub/ans-hub/ && npm run copy-html-entry",
     "lint": "eslint .",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../onerc_knowledge_hub/public/anc-hub/index.html ../onerc_knowledge_hub/www/anc-hub.html"
+    "copy-html-entry": "cp ../onerc_knowledge_hub/public/ans-hub/index.html ../onerc_knowledge_hub/www/ans-hub.html"
   },
   "dependencies": {
     "frappe-react-sdk": "^1.15.0",
+    "lucide-react": "^1.14.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.0",

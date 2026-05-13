@@ -3,6 +3,8 @@ import App from "./App.tsx";
 import LoginForm from "./components/auth/Login.tsx";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
 import Home from "./components/dashboard/Home.tsx";
+import AboutPage from "./components/about/About.tsx";
+import PendingApprovalPage from "./components/pending-approval/PendingApproval.tsx";
 import ErrorPage403 from "./components/error/ErrorPage403.tsx";
 import ErrorPage404 from "./components/error/ErrorPage404.tsx";
 
@@ -14,6 +16,8 @@ const AppRouter = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/pending-approval" element={<PendingApprovalPage />} />
         </Route>
 
         <Route path="/403" element={<ErrorPage403 />} />

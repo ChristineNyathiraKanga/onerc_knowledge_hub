@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useFrappeGetCall } from "frappe-react-sdk";
 
 /**
  * Auth — sign-in / sign-up screen with a sliding red panel.
@@ -7,20 +8,25 @@ import { useState, useEffect } from "react";
  */
 interface AuthProps {
   onSignIn?: (credentials: { email: string; password: string }) => void;
-  onSignUp?: (userData: { name: string; email: string; password: string; jobTitle: string; nationalSociety: string }) => void;
+  onSignUp?: (userData: { name: string; email: string; jobTitle: string; nationalSociety: string; gender: string }) => void;
 }
 
 export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
   const [isSignIn, setIsSignIn] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Fetch national societies
+  const { data: nationalSocieties, isLoading: loadingSocieties } = useFrappeGetCall(
+    "onerc_knowledge_hub.api.national_society.get_national_societies"
+  );
+
   // Sign-up form state
   const [signUpData, setSignUpData] = useState({
     name: "",
     email: "",
-    password: "",
     jobTitle: "",
     nationalSociety: "",
+    gender: "",
   });
 
   // Sign-in form state
@@ -84,7 +90,7 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                 Create an <em>account</em>
               </h2>
               <p className="ma-sub">
-                A quiet place for the curious. Three details, and the door is yours.
+                Submit your details below. Your account will be reviewed and activated upon approval.
               </p>
 
               <div className="ma-field">
@@ -136,35 +142,47 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
                 <label className="ma-label">
                   National Society
                 </label>
-                <input
+                <select
                   className="ma-input"
-                  type="text"
-                  placeholder="Your organization"
                   value={signUpData.nationalSociety}
                   onChange={(e) =>
                     setSignUpData({ ...signUpData, nationalSociety: e.target.value })
                   }
                   required
-                />
+                  disabled={loadingSocieties}
+                >
+                  <option value="">
+                    {loadingSocieties ? "Loading..." : "Select your organization"}
+                  </option>
+                  {nationalSocieties?.message?.map((society: { name: string; full_official_name: string; short_name: string; country: string }) => (
+                    <option key={society.name} value={society.name}>
+                      {society.full_official_name} {society.country ? `(${society.country})` : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="ma-field">
                 <label className="ma-label">
-                  Password
+                  Gender
                 </label>
-                <input
+                <select
                   className="ma-input"
-                  type="password"
-                  placeholder="A secret of your choosing"
-                  value={signUpData.password}
+                  value={signUpData.gender}
                   onChange={(e) =>
-                    setSignUpData({ ...signUpData, password: e.target.value })
+                    setSignUpData({ ...signUpData, gender: e.target.value })
                   }
                   required
-                />
+                >
+                  <option value="">Select your gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
               </div>
 
               <button className="ma-button" type="submit">
-                <span className="ma-btn-label">Sign Up</span>
+                <span className="ma-btn-label">Submit Registration</span>
                 <span className="ma-btn-arrow">→</span>
               </button>
             </form>
@@ -335,7 +353,7 @@ const css = `
     position: relative;
     width: 100%;
     max-width: 1000px;
-    height: 600px;
+    height: 720px;
     background-color: #ffffff;
     border: 1px solid var(--ma-rule);
     box-shadow: var(--ma-shadow-soft);
@@ -489,6 +507,22 @@ const css = `
   .ma-btn-label, .ma-btn-arrow { position: relative; z-index: 1; }
   .ma-btn-arrow { transition: transform 0.4s ease; }
   .ma-button:hover .ma-btn-arrow { transform: translateX(4px); }
+
+  /* approval notice */
+  .ma-approval-notice {
+    background-color: var(--ma-red-tint);
+    border-left: 3px solid var(--ma-red);
+    padding: 16px 20px;
+    margin: 0 0 24px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ma-ink);
+    border-radius: 4px;
+  }
+  .ma-approval-notice strong {
+    color: var(--ma-red);
+    font-weight: 600;
+  }
 
   /* red switch panel */
   .ma-switch {

@@ -17,7 +17,7 @@ export default defineConfig({
 		}
 	},
 	build: {
-		outDir: '../onerc_knowledge_hub/public/anc-hub',
+		outDir: '../onerc_knowledge_hub/public/ans-hub',
 		emptyOutDir: true,
 		target: 'es2015',
 	},
