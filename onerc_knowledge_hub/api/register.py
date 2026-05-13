@@ -119,6 +119,19 @@ def set_password_and_activate(localisation_hub_user, new_password):
 
 	return {"activated": True, "user": user.name}
 
+#update status of Localisation Hub User to Approved
+@frappe.whitelist()
+def approve_localisation_hub_user(name):
+	frappe.only_for("LH Admin", "System Manager")
+
+	lhu = frappe.get_doc("Localisation Hub User", name)
+	if lhu.status != "Pending":
+		frappe.throw(frappe._("Only users with Pending status can be approved"))
+
+	lhu.status = "Approved"
+	lhu.save(ignore_permissions=True)
+
+	return {"name": lhu.name, "status": lhu.status}
 
 # Link Lookup APIs
 @frappe.whitelist(allow_guest=True)
