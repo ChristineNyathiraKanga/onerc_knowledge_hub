@@ -13,8 +13,7 @@
    "fieldname": "expertise",
    "fieldtype": "Link",
    "label": "Expertise",
-   "options": "Expertise",
-   "unique": 1
+   "options": "Expertise"
   }
  ],
  "grid_page_length": 50,

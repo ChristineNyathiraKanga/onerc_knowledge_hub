@@ -102,7 +102,8 @@
    "label": "Company Email",
    "oldfieldname": "company_email",
    "oldfieldtype": "Data",
-   "options": "Email"
+   "options": "Email",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_txta",
@@ -118,7 +119,8 @@
    "fieldname": "national_society",
    "fieldtype": "Link",
    "label": "National Society",
-   "options": "National Society"
+   "options": "National Society",
+   "reqd": 1
   },
   {
    "fieldname": "primary_language",
@@ -210,7 +212,7 @@
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-13 10:30:05.152017",
+ "modified": "2026-05-13 12:45:18.928490",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "Localisation Hub User",
