@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class NSPillar(Document):
+class Region(Document):
 	pass

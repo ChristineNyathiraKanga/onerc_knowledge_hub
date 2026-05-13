@@ -1,55 +1,44 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:national_society_name",
  "creation": "2026-05-11 12:27:58.203696",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "identity_section",
-  "full_official_name",
-  "short_name",
+  "national_society_name",
+  "abbreviation",
+  "logo",
   "column_break_shct",
   "country",
+  "region",
+  "banner_image",
+  "section_break_viwn",
+  "about",
+  "mission_statement",
+  "key_focus_area",
   "section_break_peeh",
   "website",
-  "physical_address",
-  "column_break_wscg",
   "phone_number",
+  "email",
+  "column_break_wscg",
+  "physical_address",
+  "section_break_mbvq",
   "social_media",
-  "official_email",
   "leadership_section",
   "secretary_general_name",
-  "secretary_general_email",
+  "column_break_vpsg",
+  "bio",
   "organisation_size_section",
   "active_vonteers",
-  "staff_count",
   "active_branches",
   "column_break_biok",
-  "country_coverage",
+  "organization_size_update_date",
   "section_break_twnb",
   "pillars"
  ],
  "fields": [
-  {
-   "fieldname": "full_official_name",
-   "fieldtype": "Data",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Full Official Name",
-   "reqd": 1
-  },
-  {
-   "fieldname": "short_name",
-   "fieldtype": "Data",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "in_preview": 1,
-   "in_standard_filter": 1,
-   "label": "Short Name",
-   "unique": 1
-  },
   {
    "fieldname": "column_break_shct",
    "fieldtype": "Column Break"
@@ -62,7 +51,8 @@
    "in_standard_filter": 1,
    "label": "Country",
    "options": "Country",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "section_break_twnb",
@@ -73,7 +63,7 @@
    "fieldname": "pillars",
    "fieldtype": "Table",
    "label": "Pillars",
-   "options": "NS Pillar"
+   "options": "Localization Pillar Link"
   },
   {
    "fieldname": "section_break_peeh",
@@ -83,18 +73,14 @@
   {
    "fieldname": "website",
    "fieldtype": "Data",
-   "label": "Website"
+   "label": "Website",
+   "options": "URL"
   },
   {
+   "description": "eg. Red Cross Road, Henry Dunant Avenue",
    "fieldname": "physical_address",
    "fieldtype": "Small Text",
    "label": "Physical Address"
-  },
-  {
-   "fieldname": "official_email",
-   "fieldtype": "Data",
-   "label": "Official Email",
-   "options": "Email"
   },
   {
    "fieldname": "phone_number",
@@ -108,12 +94,6 @@
    "label": "Identity"
   },
   {
-   "fieldname": "social_media",
-   "fieldtype": "Data",
-   "label": "Social Media",
-   "options": "URL"
-  },
-  {
    "fieldname": "leadership_section",
    "fieldtype": "Section Break",
    "label": "Leadership"
@@ -122,12 +102,6 @@
    "fieldname": "secretary_general_name",
    "fieldtype": "Data",
    "label": "Secretary General Name"
-  },
-  {
-   "fieldname": "secretary_general_email",
-   "fieldtype": "Data",
-   "label": "Secretary General Email",
-   "options": "Email"
   },
   {
    "fieldname": "organisation_size_section",
@@ -140,19 +114,9 @@
    "label": "Active Vonteers"
   },
   {
-   "fieldname": "staff_count",
-   "fieldtype": "Int",
-   "label": "Staff Count"
-  },
-  {
    "fieldname": "active_branches",
    "fieldtype": "Int",
    "label": "Active Branches"
-  },
-  {
-   "fieldname": "country_coverage",
-   "fieldtype": "Small Text",
-   "label": "Country Coverage"
   },
   {
    "fieldname": "column_break_wscg",
@@ -161,15 +125,104 @@
   {
    "fieldname": "column_break_biok",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "abbreviation",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Abbreviation",
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_viwn",
+   "fieldtype": "Section Break",
+   "label": "Profile"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo"
+  },
+  {
+   "fieldname": "banner_image",
+   "fieldtype": "Attach Image",
+   "label": "Banner Image"
+  },
+  {
+   "fieldname": "about",
+   "fieldtype": "Text Editor",
+   "label": "About"
+  },
+  {
+   "fieldname": "mission_statement",
+   "fieldtype": "Small Text",
+   "label": "Mission Statement"
+  },
+  {
+   "fieldname": "key_focus_area",
+   "fieldtype": "Small Text",
+   "label": "Key Focus Area"
+  },
+  {
+   "fieldname": "column_break_vpsg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bio",
+   "fieldtype": "Long Text",
+   "label": "Bio"
+  },
+  {
+   "fieldname": "section_break_mbvq",
+   "fieldtype": "Section Break",
+   "label": "Social Media"
+  },
+  {
+   "fieldname": "social_media",
+   "fieldtype": "Table",
+   "label": "Social Media",
+   "options": "Social Media Links"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Link",
+   "label": "Region",
+   "options": "Region"
+  },
+  {
+   "fieldname": "national_society_name",
+   "fieldtype": "Data",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "National Society Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Official Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "organization_size_update_date",
+   "fieldtype": "Date",
+   "label": "Updated On"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-12 16:10:08.889601",
+ "modified": "2026-05-13 12:06:13.994781",
  "modified_by": "Administrator",
  "module": "Onerc Knowledge Hub",
  "name": "National Society",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -187,11 +240,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "full_official_name,country",
+ "search_fields": "national_society_name,country,abbreviation",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "full_official_name",
+ "title_field": "national_society_name",
  "translated_doctype": 1
 }
