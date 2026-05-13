@@ -35,16 +35,9 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
     password: "",
   });
 
-  // load fonts once
+  // Fonts are already loaded globally via index.html - no need to load again
   useEffect(() => {
-    const id = "auth-fonts";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap";
-    document.head.appendChild(link);
+    // Font loading is handled globally in index.html
   }, []);
 
   const toggleForm = () => {
@@ -307,7 +300,7 @@ const css = `
   .ma-root {
     width: 100%;
     min-height: 100vh;
-    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Google Sans Flex", -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 14px;
     color: var(--ma-ink);
     background-color: var(--ma-paper);
@@ -337,7 +330,7 @@ const css = `
   /* corner marks */
   .ma-mark {
     position: absolute;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.18em;
@@ -404,7 +397,7 @@ const css = `
   }
 
   .ma-title {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-weight: 600;
     font-size: clamp(34px, 4.5vw, 46px);
     line-height: 1.05;
@@ -441,7 +434,7 @@ const css = `
     height: 42px;
     padding: 0 0 6px 0;
     font-size: 16px;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     color: var(--ma-ink);
     background: transparent;
     border: none;
@@ -475,7 +468,7 @@ const css = `
     padding: 0 32px;
     background-color: var(--ma-ink);
     color: #ffffff;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.22em;
@@ -611,7 +604,7 @@ const css = `
   }
 
   .ma-switch-title {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: clamp(40px, 6vw, 56px);
@@ -640,7 +633,7 @@ const css = `
     border: 1px solid rgba(255, 255, 255, 0.5);
     padding: 0 36px;
     height: 52px;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Google Sans Flex", sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.22em;

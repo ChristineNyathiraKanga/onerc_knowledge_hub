@@ -22,11 +22,11 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/pending-approval" element={<PendingApprovalPage />} />
         <Route path="/403" element={<ErrorPage403 />} />
+        <Route path="/about" element={<AboutPage />} />
 
         {/* Dashboard routes (with sidebar layout) */}
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
           <Route path="/news" element={<NewsIndex />} />
           <Route path="/news/:slug" element={<NewsDetail />} />
           <Route path="/events" element={<EventsIndex />} />

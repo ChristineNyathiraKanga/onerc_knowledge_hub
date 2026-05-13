@@ -1,216 +1,284 @@
 import { Link } from "react-router-dom";
 import {
-  ArrowRight, ArrowUpRight, Calendar, MapPin, Newspaper,
-  Globe2, TrendingUp, Sparkles, Play, Mail, ChevronRight,
+  ArrowUpRight,
+  Calendar,
+  MapPin,
+  BookOpen,
+  TrendingUp,
+  Users,
+  Globe2,
+  FileText,
+  ChevronRight,
+  Activity,
+  Sparkles,
+  Target,
+  Zap,
 } from "lucide-react";
-import { Button } from "../ui/button";
-import { SiteHeader, SiteFooter } from "../layout/SiteHeader";
-import { news, events, featured, pillarColor } from "../../lib/site-data";
+import { news, events, publications, pillarColor } from "../../lib/site-data";
 
 const stats = [
-  { value: "10", label: "African National Societies" },
-  { value: "7", label: "Consortium Partners" },
-  { value: "4", label: "Strategic Pillars" },
-  { value: "120+", label: "Peer exchanges hosted" },
+  { value: "10", label: "National Societies", icon: Globe2, color: "bg-blue-50 text-blue-600", accent: "bg-blue-500" },
+  { value: "7", label: "Consortium Partners", icon: Users, color: "bg-purple-50 text-purple-600", accent: "bg-purple-500" },
+  { value: "120+", label: "Peer Exchanges", icon: Activity, color: "bg-green-50 text-green-600", accent: "bg-green-500" },
 ];
 
-const Home = () => {
-  const topNews = news.slice(0, 4);
-  const topEvents = events.slice(0, 3);
+const quickActions = [
+  { label: "Add Knowledge", icon: BookOpen, path: "/create/knowledge", color: "bg-blue-500" },
+  { label: "Create News", icon: TrendingUp, path: "/create/news", color: "bg-purple-500" },
+  { label: "Share Story", icon: Sparkles, path: "/create/stories", color: "bg-pink-500" },
+];
+
+export default function Home() {
+  const recentNews = news.slice(0, 3);
+  const upcomingEvents = events.slice(0, 4);
+  const featuredPubs = publications.slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-white">
-      <SiteHeader />
+    <div className="min-h-full bg-gradient-to-br from-gray-50 via-white to-gray-50 p-6 space-y-8">
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 70% 70%, white 1px, transparent 1px)", backgroundSize: "48px 48px, 64px 64px" }} />
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-red-500/30 blur-3xl" />
-        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-red-500/20 blur-3xl" />
+      {/* ── Hero Section ── */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-dash-navy via-dash-navy to-blue-900 p-8 text-white shadow-xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-dash-red opacity-10 rounded-full blur-3xl -mr-32 -mt-32" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500 opacity-10 rounded-full blur-3xl -ml-32 -mb-32" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-6 py-20 md:py-28 lg:grid-cols-12 lg:py-32">
-          <div className="lg:col-span-7">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5" />
-              MOFA II · Peer-to-Peer Learning Platform
-            </div>
-            <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-              A journey toward<br />
-              <span className="italic text-red-500">self-reliance</span>,<br />
-              led from Africa.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-white/80">
-              The Localisation Alliance brings together 10 African National Societies and 7 Consortium Partners — sharing leadership, finance, and frontline practice to build stronger, locally led humanitarian systems.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/about">
-                <Button size="lg" className="bg-red-500 text-white hover:bg-red-600">
-                  Discover the Alliance <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/news">
-                <Button size="lg" variant="outline" className="border-white/30 bg-white/5 text-white hover:bg-white/15 hover:text-white">
-                  <Play className="mr-1 h-4 w-4" /> Latest stories
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5">
-            <Link to={`/news/${featured.slug}`} className="block rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-md shadow-2xl transition-all hover:border-red-500/40 hover:bg-white/10">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-2 rounded-full bg-red-500/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-                  Live · {featured.tag}
+        <div className="relative z-10">
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div className="flex-1 min-w-[300px]">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="h-5 w-5 text-dash-red" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-red-300">
+                  Welcome Back
                 </span>
-                <span className="text-xs text-white/60">{featured.date}</span>
               </div>
-              <h3 className="mt-4 font-display text-2xl font-semibold leading-tight">{featured.title}</h3>
-              <p className="mt-3 text-sm text-white/70">{featured.excerpt}</p>
-              <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-                <div className="flex items-center gap-2 text-xs text-white/70"><MapPin className="h-3.5 w-3.5" /> {featured.place}</div>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-red-400">Read story <ArrowUpRight className="h-3.5 w-3.5" /></span>
-              </div>
-            </Link>
+              <h1 className="font-display text-4xl font-bold mb-3 leading-tight">
+                Good morning, Alliance 👋
+              </h1>
+              <p className="text-lg text-white/80 max-w-2xl">
+                Empowering National Societies across Africa through peer learning, shared resources, and collaborative growth.
+              </p>
+            </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              {stats.slice(0, 2).map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                  <div className="font-display text-3xl font-bold">{s.value}</div>
-                  <div className="text-xs text-white/70">{s.label}</div>
-                </div>
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-3">
+              {quickActions.map((action) => (
+                <Link
+                  key={action.path}
+                  to={action.path}
+                  className="group flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl hover:bg-white/20 transition-all duration-300 hover:scale-105"
+                >
+                  <action.icon className="h-4 w-4" />
+                  <span className="text-sm font-medium">{action.label}</span>
+                  <ChevronRight className="h-3.5 w-3.5 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                </Link>
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      <section className="border-y border-gray-200 bg-gray-50">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-gray-200 md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-white px-6 py-8 text-center">
-              <div className="font-display text-4xl font-bold text-gray-900">{s.value}</div>
-              <div className="mt-1 text-xs uppercase tracking-widest text-gray-600">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* News */}
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
-              <Newspaper className="h-3.5 w-3.5" /> Latest News
-            </div>
-            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900 md:text-5xl">From the field, across the network</h2>
+          {/* Stats Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="group relative overflow-hidden rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 p-5 hover:bg-white/15 transition-all duration-300"
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${s.color} shadow-lg`}>
+                    <s.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <div className="font-display text-3xl font-bold text-white leading-none mb-1">
+                      {s.value}
+                    </div>
+                    <div className="text-sm text-white/70">{s.label}</div>
+                  </div>
+                </div>
+                <div className={`absolute bottom-0 right-0 w-24 h-24 ${s.accent} opacity-5 rounded-full blur-2xl`} />
+              </div>
+            ))}
           </div>
-          <Link to="/news" className="hidden items-center gap-1 text-sm font-medium text-red-500 hover:underline md:inline-flex">
-            All news <ChevronRight className="h-4 w-4" />
+        </div>
+      </div>
+
+      {/* ── Main Content Grid ── */}
+      <div className="grid gap-6 lg:grid-cols-3">
+
+        {/* Recent News - Spans 2 columns */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* News Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-dash-red/10">
+                <TrendingUp className="h-5 w-5 text-dash-red" />
+              </div>
+              <div>
+                <h2 className="font-display text-xl font-semibold text-gray-900">Recent News</h2>
+                <p className="text-xs text-gray-500">Latest updates from the network</p>
+              </div>
+            </div>
+            <Link
+              to="/news"
+              className="flex items-center gap-1.5 text-sm font-medium text-dash-red hover:gap-2 transition-all group"
+            >
+              View all
+              <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+          </div>
+
+          {/* News Cards */}
+          <div className="space-y-4">
+            {recentNews.map((n) => (
+              <Link
+                key={n.slug}
+                to={`/news/${n.slug}`}
+                className="group block relative overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-dash-red/30 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="flex items-start gap-5 p-6">
+                  {/* Color Accent */}
+                  <div className={`w-1.5 h-24 rounded-full ${pillarColor[n.color]} shrink-0`} />
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gray-100 text-[10px] font-semibold uppercase tracking-widest text-gray-600">
+                        {n.tag}
+                      </span>
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 group-hover:text-dash-red transition-colors leading-snug mb-2 line-clamp-2">
+                      {n.title}
+                    </h3>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" /> {n.date}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <MapPin className="h-3.5 w-3.5" /> {n.place}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-gray-400 group-hover:text-dash-red group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Sidebar - Events */}
+        <div className="space-y-6">
+          {/* Events Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+                <Calendar className="h-5 w-5 text-purple-600" />
+              </div>
+              <div>
+                <h2 className="font-display text-xl font-semibold text-gray-900">Upcoming Events</h2>
+                <p className="text-xs text-gray-500">Mark your calendar</p>
+              </div>
+            </div>
+            <Link
+              to="/events"
+              className="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {/* Event Cards */}
+          <div className="space-y-3">
+            {upcomingEvents.map((e) => (
+              <Link
+                key={e.slug}
+                to={`/events/${e.slug}`}
+                className="group block rounded-xl bg-white border border-gray-200 hover:border-purple-300 shadow-sm hover:shadow-md transition-all duration-300 p-4"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-gradient-to-br from-dash-navy to-blue-900 text-white shadow-md">
+                    <span className="font-display text-xl font-bold leading-none">{e.day}</span>
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-red-400 mt-0.5">
+                      {e.month}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-gray-900 group-hover:text-purple-600 leading-snug line-clamp-2 mb-1.5 transition-colors">
+                      {e.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-1.5 text-xs text-gray-500">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100">
+                        {e.type}
+                      </span>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded bg-gray-100">
+                        {e.time}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Knowledge Resources Section ── */}
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
+              <BookOpen className="h-5 w-5 text-green-600" />
+            </div>
+            <div>
+              <h2 className="font-display text-xl font-semibold text-gray-900">Knowledge Resources</h2>
+              <p className="text-xs text-gray-500">Tools, reports & learning materials</p>
+            </div>
+          </div>
+          <Link
+            to="/knowledge"
+            className="flex items-center gap-1.5 text-sm font-medium text-green-600 hover:gap-2 transition-all group"
+          >
+            Browse Library
+            <ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {topNews.map((n) => (
-            <Link key={n.slug} to={`/news/${n.slug}`} className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:-translate-y-1 hover:border-red-500/40 shadow-md">
-              <div className={`relative h-32 ${pillarColor[n.color]}`}>
-                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-                <span className="absolute bottom-3 left-4 text-[11px] font-semibold uppercase tracking-widest text-white">{n.tag}</span>
+        {/* Resources Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {featuredPubs.map((pub) => (
+            <div
+              key={pub.slug}
+              className="group relative overflow-hidden rounded-xl bg-white border border-gray-200 hover:border-green-300 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 p-5"
+            >
+              {/* Icon */}
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${pillarColor[pub.pillar]} mb-4 shadow-md`}>
+                <FileText className="h-6 w-6" />
               </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-display text-lg font-semibold leading-snug text-gray-900 group-hover:text-red-500">{n.title}</h3>
-                <div className="mt-auto flex items-center justify-between pt-5 text-xs text-gray-600">
-                  <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {n.date}</span>
-                  <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {n.place}</span>
+
+              {/* Content */}
+              <div className="mb-3">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[9px] font-semibold uppercase tracking-widest text-gray-400">
+                    {pub.category}
+                  </span>
+                  <span className="text-gray-300">·</span>
+                  <span className="text-[9px] text-gray-400">{pub.fileType}</span>
                 </div>
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 mb-1 group-hover:text-green-600 transition-colors">
+                  {pub.title}
+                </h3>
+                <p className="text-xs text-gray-500 line-clamp-2">{pub.description}</p>
               </div>
-            </Link>
+
+              {/* Download Button */}
+              <button className="w-full mt-auto rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-700 hover:border-green-500 hover:bg-green-50 hover:text-green-700 transition-all group-hover:border-green-500">
+                <span className="flex items-center justify-center gap-1.5">
+                  <Zap className="h-3.5 w-3.5" />
+                  Download
+                </span>
+              </button>
+            </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* Events + Pillars */}
-      <section className="border-t border-gray-200 bg-gray-50">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-5">
-          <div className="lg:col-span-3">
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
-              <Calendar className="h-3.5 w-3.5" /> Upcoming Events
-            </div>
-            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900">Convening the network</h2>
-            <p className="mt-3 max-w-xl text-gray-600">Webinars, working groups and in-person gatherings that move localisation forward.</p>
-
-            <div className="mt-8 space-y-3">
-              {topEvents.map((e) => (
-                <Link key={e.slug} to={`/events/${e.slug}`} className="group flex items-center gap-5 rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-red-500/50 hover:shadow-lg">
-                  <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 text-white">
-                    <span className="font-display text-2xl font-bold leading-none">{e.day}</span>
-                    <span className="text-[10px] font-semibold uppercase tracking-widest text-red-400">{e.month}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-display text-lg font-semibold text-gray-900 group-hover:text-red-500">{e.title}</h3>
-                    <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-600">
-                      <span>{e.type}</span><span>·</span><span>{e.time}</span>
-                    </div>
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-gray-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-red-500" />
-                </Link>
-              ))}
-              <Link to="/events" className="inline-flex items-center gap-1 pt-2 text-sm font-medium text-red-500 hover:underline">
-                View all events <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="lg:col-span-2">
-            <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
-              <TrendingUp className="h-3.5 w-3.5" /> Four Pillars
-            </div>
-            <h2 className="font-display text-4xl font-semibold tracking-tight text-gray-900">How we work</h2>
-            <div className="mt-6 space-y-3">
-              {[
-                { name: "Leadership & Governance", color: "leadership", lead: "IFRC" },
-                { name: "Branch Development", color: "branch", lead: "IFRC" },
-                { name: "Resource Mobilisation", color: "resource", lead: "Swiss & Netherlands RC" },
-                { name: "Finance Development", color: "finance", lead: "NorCross" },
-              ].map((p) => (
-                <Link key={p.name} to="/pillars" className={`group relative block overflow-hidden rounded-xl p-5 ${pillarColor[p.color]}`}>
-                  <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10 blur-xl transition-all group-hover:scale-150" />
-                  <div className="relative">
-                    <div className="font-display text-lg font-semibold">{p.name}</div>
-                    <div className="mt-1 text-xs uppercase tracking-widest opacity-75">Led by {p.lead}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden bg-gray-900 text-white">
-        <div className="absolute -right-20 top-0 h-80 w-80 rounded-full bg-red-500/20 blur-3xl" />
-        <div className="absolute -bottom-20 left-0 h-80 w-80 rounded-full bg-red-500/10 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
-          <div>
-            <Globe2 className="h-10 w-10 text-red-500" />
-            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight md:text-5xl">Join a movement of African-led humanitarian renewal.</h2>
-            <p className="mt-4 max-w-lg text-white/75">Get the monthly briefing — peer stories, opportunities and learning resources from across the Alliance.</p>
-          </div>
-          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-3 sm:flex-row">
-            <div className="relative flex-1">
-              <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
-              <input type="email" placeholder="your.email@nationalsociety.org" className="h-12 w-full rounded-md border border-white/20 bg-white/10 pl-11 pr-4 text-sm text-white placeholder:text-white/50 backdrop-blur focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/40" />
-            </div>
-            <Button size="lg" className="h-12 bg-red-500 text-white hover:bg-red-600">
-              Subscribe <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
-          </form>
-        </div>
-      </section>
-
-      <SiteFooter />
     </div>
   );
-};
-
-export default Home;
+}

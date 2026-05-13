@@ -69,7 +69,7 @@ export default {
 			},
 			fontFamily: {
 				display: ["Fraunces", "Georgia", "serif"],
-				sans: ["Open Sans", "system-ui", "sans-serif"],
+				sans: ["Google Sans Flex", "system-ui", "sans-serif"],
 			},
 		},
 	},
