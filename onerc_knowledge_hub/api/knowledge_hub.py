@@ -42,3 +42,9 @@ def get_knowledge_hub_categories():
 		order_by="category_name asc",
 	)
 	return entries
+
+
+@frappe.whitelist(allow_guest=True)
+def get_knowledge_hub_details(name):
+	entry = frappe.get_doc("Knowledge Hub", name)
+	return entry.as_dict()

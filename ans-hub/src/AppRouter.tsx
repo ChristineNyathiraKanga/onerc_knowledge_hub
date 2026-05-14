@@ -1,27 +1,29 @@
 import { Route, Routes } from "react-router-dom";
 import App from "./App.tsx";
-import DashboardLayout from "./components/layout/DashboardLayout.tsx";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
-import LoginForm from "./components/auth/Login.tsx";
-import SetPassword from "./components/auth/SetPassword.tsx";
-import ForgotPassword from "./components/auth/ForgotPassword.tsx";
-import ResetPassword from "./components/auth/ResetPassword.tsx";
-import Home from "./components/dashboard/Home.tsx";
 import AboutPage from "./components/about/About.tsx";
-import PendingApprovalPage from "./components/pending-approval/PendingApproval.tsx";
-import NewsIndex from "./components/news/NewsIndex.tsx";
-import NewsDetail from "./components/news/NewsDetail.tsx";
-import EventsIndex from "./components/events/EventsIndex.tsx";
-import EventDetail from "./components/events/EventDetail.tsx";
-import Knowledge from "./components/knowledge/Knowledge.tsx";
-import NationalSocietiesIndex from "./components/national-societies/NationalSocietiesIndex.tsx";
-import NationalSocietyDetail from "./components/national-societies/NationalSocietyDetail.tsx";
-import Pillars from "./components/pillars/Pillars.tsx";
-import UsersManagement from "./components/users/UsersManagement.tsx";
-import FAQs from "./components/faqs/FAQs.tsx";
-import Profile from "./components/profile/Profile.tsx";
+import ForgotPassword from "./components/auth/ForgotPassword.tsx";
+import LoginForm from "./components/auth/Login.tsx";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute.tsx";
+import ResetPassword from "./components/auth/ResetPassword.tsx";
+import SetPassword from "./components/auth/SetPassword.tsx";
+import Home from "./components/dashboard/Home.tsx";
 import ErrorPage403 from "./components/error/ErrorPage403.tsx";
 import ErrorPage404 from "./components/error/ErrorPage404.tsx";
+import EventDetail from "./components/events/EventDetail.tsx";
+import EventsIndex from "./components/events/EventsIndex.tsx";
+import FAQs from "./components/faqs/FAQs.tsx";
+import Knowledge from "./components/knowledge/Knowledge.tsx";
+import KnowledgeDetail from "./components/knowledge/KnowledgeDetail.tsx";
+import NewKnowledge from "./components/knowledge/NewKnowledge.tsx";
+import DashboardLayout from "./components/layout/DashboardLayout.tsx";
+import NationalSocietiesIndex from "./components/national-societies/NationalSocietiesIndex.tsx";
+import NationalSocietyDetail from "./components/national-societies/NationalSocietyDetail.tsx";
+import NewsDetail from "./components/news/NewsDetail.tsx";
+import NewsIndex from "./components/news/NewsIndex.tsx";
+import PendingApprovalPage from "./components/pending-approval/PendingApproval.tsx";
+import Pillars from "./components/pillars/Pillars.tsx";
+import Profile from "./components/profile/Profile.tsx";
+import UsersManagement from "./components/users/UsersManagement.tsx";
 
 const AppRouter = () => {
   return (
@@ -45,8 +47,16 @@ const AppRouter = () => {
             <Route path="/events" element={<EventsIndex />} />
             <Route path="/events/:slug" element={<EventDetail />} />
             <Route path="/knowledge" element={<Knowledge />} />
-            <Route path="/national-societies" element={<NationalSocietiesIndex />} />
-            <Route path="/national-societies/:slug" element={<NationalSocietyDetail />} />
+            <Route path="/knowledge/:slug" element={<KnowledgeDetail />} />
+            <Route path="/knowledge/new" element={<NewKnowledge />} />
+            <Route
+              path="/national-societies"
+              element={<NationalSocietiesIndex />}
+            />
+            <Route
+              path="/national-societies/:slug"
+              element={<NationalSocietyDetail />}
+            />
             <Route path="/pillars" element={<Pillars />} />
             <Route path="/users" element={<UsersManagement />} />
             <Route path="/faqs" element={<FAQs />} />
