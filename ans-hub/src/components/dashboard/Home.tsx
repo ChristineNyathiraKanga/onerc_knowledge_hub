@@ -179,7 +179,7 @@ export default function Home() {
                 ))
               ) : (
                 <div className="bg-white rounded border border-gray-200 p-8 text-center">
-                  <Newspaper className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                  <Newspaper className="h-12 w-12 text-dash-navy/30 mx-auto mb-3" />
                   <p className="text-gray-500">No recent news available</p>
                 </div>
               )}
@@ -205,9 +205,9 @@ export default function Home() {
                       className="block p-3 rounded bg-gray-50 hover:bg-gray-100 transition-all border border-gray-200"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded bg-white border-2 border-dash-red">
-                          <span className="text-xl font-bold text-gray-900 leading-none">{e.day || '01'}</span>
-                          <span className="text-[9px] font-bold uppercase text-dash-red mt-0.5">{e.month || 'JAN'}</span>
+                        <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded bg-dash-navy">
+                          <span className="text-xl font-bold text-white leading-none">{e.day || '01'}</span>
+                          <span className="text-[9px] font-bold uppercase text-red-400 mt-0.5">{e.month || 'JAN'}</span>
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-bold text-gray-900 line-clamp-2 mb-1">{e.title}</h4>
@@ -221,7 +221,7 @@ export default function Home() {
                   ))
                 ) : (
                   <div className="p-6 text-center text-sm text-gray-500">
-                    <Calendar className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                    <Calendar className="h-10 w-10 text-dash-navy/30 mx-auto mb-2" />
                     No upcoming events
                   </div>
                 )}
