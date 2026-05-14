@@ -43,19 +43,19 @@ export default function Home() {
       icon: Globe2
     },
     {
-      value: dashboardData?.stats?.active_users ?? 0,
-      label: "Active Users",
-      icon: UserCheck
-    },
-    {
-      value: dashboardData?.stats?.pending_users ?? 0,
-      label: "Pending Users",
-      icon: UserPlus
-    },
-    {
-      value: dashboardData?.stats?.news_updates ?? 0,
-      label: "Network Updates",
+      value: dashboardData?.stats?.news_stories ?? 0,
+      label: "News & Stories",
       icon: Newspaper
+    },
+    {
+      value: dashboardData?.stats?.knowledge_hub ?? 0,
+      label: "Knowledge Hub",
+      icon: BookOpen
+    },
+    {
+      value: dashboardData?.stats?.upcoming_events ?? 0,
+      label: "Upcoming Events",
+      icon: Calendar
     },
   ];
 
