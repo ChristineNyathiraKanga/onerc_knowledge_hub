@@ -19,6 +19,9 @@ def get_dashboard_overview():
 			"total_users": get_total_users_count(),
 			"active_users": get_active_users_count(),
 			"pending_users": get_pending_users_count(),
+			"news_stories": get_articles_count(),
+			"knowledge_hub": get_knowledge_hub_count(),
+			"upcoming_events": get_upcoming_events_count(),
 			"news_updates": get_news_count(),
 			"events": get_events_count(),
 			"knowledge_resources": get_knowledge_resources_count(),
@@ -96,6 +99,29 @@ def get_knowledge_resources_count():
 	if frappe.db.exists("DocType", "Knowledge Resource"):
 		return frappe.db.count("Knowledge Resource")
 	return 0
+
+
+def get_articles_count():
+	"""Count of published articles"""
+	if frappe.db.exists("DocType", "Article"):
+		return frappe.db.count("Article", {"status": "Published", "docstatus": 1})
+	return 0
+
+
+def get_knowledge_hub_count():
+	"""Count of knowledge hub entries"""
+	if frappe.db.exists("DocType", "Knowledge Hub"):
+		return frappe.db.count("Knowledge Hub", {"status": "Published"})
+	return 0
+
+
+def get_upcoming_events_count():
+	"""Count of upcoming events"""
+	if not frappe.db.exists("DocType", "Event"):
+		return 0
+
+	from frappe.utils import nowdate
+	return frappe.db.count("Event", {"starts_on": [">=", nowdate()]})
 
 
 def get_recent_news(limit=3):

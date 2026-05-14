@@ -12,6 +12,12 @@ export default function NewsIndex() {
     {}
   );
 
+  // Fetch categories from API
+  const { data: categoriesData } = useFrappeGetCall<{ message: Array<{ name: string; category_name: string; description: string }> }>(
+    "onerc_core.api.article.get_categories",
+    {}
+  );
+
   // Transform API data to component format with cover images
   const news = useMemo(() => {
     if (!articlesData?.message) return [];
@@ -21,13 +27,23 @@ export default function NewsIndex() {
     }));
   }, [articlesData]);
 
-  // Calculate category counts dynamically
-  const categories = useMemo(() => [
-    { name: "Leadership", color: "bg-pillar-leadership", count: news.filter(n => n.color === "leadership").length },
-    { name: "Branch Development", color: "bg-pillar-branch", count: news.filter(n => n.color === "branch").length },
-    { name: "Resource Mobilisation", color: "bg-pillar-resource", count: news.filter(n => n.color === "resource").length },
-    { name: "Finance Development", color: "bg-pillar-finance", count: news.filter(n => n.color === "finance").length },
-  ], [news]);
+  // Category to color mapping
+  const categoryColorMap: Record<string, string> = {
+    "Leadership": "bg-pillar-leadership",
+    "Branch Development": "bg-pillar-branch",
+    "Resource Mobilisation": "bg-pillar-resource",
+    "Finance Development": "bg-pillar-finance",
+  };
+
+  // Calculate category counts dynamically from API categories
+  const categories = useMemo(() => {
+    if (!categoriesData?.message) return [];
+    return categoriesData.message.map(cat => ({
+      name: cat.category_name || cat.name,
+      color: categoryColorMap[cat.category_name || cat.name] || "bg-pillar-leadership",
+      count: news.filter(n => n.tag === (cat.category_name || cat.name)).length
+    }));
+  }, [categoriesData, news]);
   return (
     <div className="min-h-full bg-gray-50">
       {/* LinkedIn-style container */}
