@@ -14,6 +14,8 @@ import NewsDetail from "./components/news/NewsDetail.tsx";
 import EventsIndex from "./components/events/EventsIndex.tsx";
 import EventDetail from "./components/events/EventDetail.tsx";
 import Knowledge from "./components/knowledge/Knowledge.tsx";
+import NationalSocietiesIndex from "./components/national-societies/NationalSocietiesIndex.tsx";
+import NationalSocietyDetail from "./components/national-societies/NationalSocietyDetail.tsx";
 import Pillars from "./components/pillars/Pillars.tsx";
 import UsersManagement from "./components/users/UsersManagement.tsx";
 import FAQs from "./components/faqs/FAQs.tsx";
@@ -43,6 +45,8 @@ const AppRouter = () => {
             <Route path="/events" element={<EventsIndex />} />
             <Route path="/events/:slug" element={<EventDetail />} />
             <Route path="/knowledge" element={<Knowledge />} />
+            <Route path="/national-societies" element={<NationalSocietiesIndex />} />
+            <Route path="/national-societies/:slug" element={<NationalSocietyDetail />} />
             <Route path="/pillars" element={<Pillars />} />
             <Route path="/users" element={<UsersManagement />} />
             <Route path="/faqs" element={<FAQs />} />

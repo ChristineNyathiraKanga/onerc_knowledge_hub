@@ -88,7 +88,7 @@ export default function ResetPassword() {
 
       toast.success("Password reset successfully! Redirecting to login...");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/ans-hub/login");
       }, 2000);
     } catch (error: any) {
       toast.error(error.message || "Failed to reset password. The link may have expired.");
@@ -134,13 +134,13 @@ export default function ResetPassword() {
 
             <div className="space-y-3">
               <Link
-                to="/forgot-password"
+                to="/ans-hub/forgot-password"
                 className="block w-full py-3 px-4 bg-dash-red text-white rounded font-medium hover:bg-red-600 transition-all"
               >
                 Request New Reset Link
               </Link>
               <Link
-                to="/login"
+                to="/ans-hub/login"
                 className="block w-full py-3 px-4 border border-gray-300 text-gray-700 rounded font-medium hover:bg-gray-50 transition-all"
               >
                 Back to Sign In
@@ -302,7 +302,7 @@ export default function ResetPassword() {
         {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Remember your password?{" "}
-          <Link to="/login" className="text-dash-red font-medium hover:underline">
+          <Link to="/ans-hub/login" className="text-dash-red font-medium hover:underline">
             Sign in
           </Link>
         </div>
