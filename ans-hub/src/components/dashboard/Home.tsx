@@ -6,7 +6,6 @@ import {
   Users,
   Globe2,
   Calendar,
-  Sparkles,
   Newspaper,
   Clock,
   MapPin,
@@ -14,10 +13,10 @@ import {
 import { news, events, publications, pillarColor } from "../../lib/site-data";
 
 const stats = [
-  { value: "10", label: "National Societies", icon: Globe2, color: "from-blue-500 to-blue-600" },
-  { value: "7", label: "Consortium Partners", icon: Users, color: "from-purple-500 to-purple-600" },
-  { value: "120+", label: "Peer Exchanges", icon: TrendingUp, color: "from-green-500 to-green-600" },
-  { value: news.length, label: "Network Updates", icon: Newspaper, color: "from-dash-red to-red-600" },
+  { value: "10", label: "National Societies", icon: Globe2 },
+  { value: "7", label: "Consortium Partners", icon: Users },
+  { value: "120+", label: "Peer Exchanges", icon: TrendingUp },
+  { value: news.length, label: "Network Updates", icon: Newspaper },
 ];
 
 export default function Home() {
@@ -30,14 +29,13 @@ export default function Home() {
       {/* Hero Banner */}
       <div className="bg-gradient-to-r from-dash-navy via-blue-900 to-dash-red p-8 text-white">
         <div className="mx-auto max-w-7xl">
-          <div className="flex items-center gap-3 mb-4">
-            <Sparkles className="h-8 w-8 text-yellow-300" />
+          <div className="mb-4">
             <span className="text-sm font-bold uppercase tracking-wider text-yellow-300">
               Dashboard Overview
             </span>
           </div>
           <h1 className="text-4xl font-bold mb-3">
-            Welcome back, Alliance! 👋
+            Welcome back, Alliance!
           </h1>
           <p className="text-lg text-white/90 max-w-3xl">
             Empowering National Societies across Africa through peer learning, shared resources, and collaborative growth.
@@ -54,7 +52,7 @@ export default function Home() {
               className="bg-white rounded border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded bg-gradient-to-br ${stat.color} text-white`}>
+                <div className="p-3 rounded bg-dash-navy text-white">
                   <stat.icon className="h-6 w-6" />
                 </div>
               </div>

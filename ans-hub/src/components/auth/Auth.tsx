@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useFrappeGetCall } from "frappe-react-sdk";
 
 /**
@@ -283,12 +284,12 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
 
               <div className="ma-field">
                 <label className="ma-label">
-                  Email
+                  Email or Username
                 </label>
                 <input
                   className="ma-input"
-                  type="email"
-                  placeholder="you@somewhere.com"
+                  type="text"
+                  placeholder="you@somewhere.com or username"
                   value={signInData.email}
                   onChange={(e) =>
                     setSignInData({ ...signInData, email: e.target.value })
@@ -313,9 +314,9 @@ export default function Auth({ onSignIn, onSignUp }: AuthProps = {}) {
               </div>
 
               <div className="ma-row">
-                <a className="ma-link" role="button" tabIndex={0}>
+                <Link to="/forgot-password" className="ma-link">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
 
               <button className="ma-button" type="submit">
