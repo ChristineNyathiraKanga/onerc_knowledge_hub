@@ -414,3 +414,185 @@ def get_other_languages():
 		fields=["name", "language_name"],
 		order_by="language_name asc",
 	)
+
+
+# ================== Password Reset Functions ==================
+
+@frappe.whitelist(allow_guest=True)
+def request_password_reset(email):
+	"""
+	Request a password reset link for a registered user.
+	Sends an email with a reset token.
+	"""
+	if not email:
+		frappe.throw(frappe._("Email is required"))
+
+	validate_email_address(email, True)
+
+	# Check if user exists and is active
+	user = frappe.db.get_value("User", {"email": email, "enabled": 1}, ["name", "first_name"], as_dict=True)
+
+	if not user:
+		# Don't reveal whether email exists for security
+		return {
+			"success": True,
+			"message": "If an account with that email exists, you will receive a password reset link shortly."
+		}
+
+	# Use Frappe's built-in password reset key generation
+	from frappe.utils import random_string, now_datetime, add_to_date
+
+	# Generate secure reset key
+	reset_key = random_string(32)
+
+	# Set reset key with expiration (1 hour)
+	frappe.db.set_value("User", user.name, {
+		"reset_password_key": reset_key,
+		"last_reset_password_key_generated_on": now_datetime()
+	})
+	frappe.db.commit()
+
+	# Send reset email
+	send_password_reset_email(user.name, user.first_name, email, reset_key)
+
+	return {
+		"success": True,
+		"message": "If an account with that email exists, you will receive a password reset link shortly."
+	}
+
+
+@frappe.whitelist(allow_guest=True)
+def validate_reset_token(token):
+	"""
+	Validate if a password reset token is valid and not expired.
+	"""
+	if not token:
+		frappe.throw(frappe._("Reset token is required"))
+
+	from frappe.utils import now_datetime, add_to_date
+
+	# Find user with this reset key
+	user = frappe.db.get_value(
+		"User",
+		{"reset_password_key": token},
+		["name", "first_name", "email", "last_reset_password_key_generated_on"],
+		as_dict=True
+	)
+
+	if not user:
+		return {
+			"valid": False,
+			"message": "Invalid or expired reset link"
+		}
+
+	# Check if token is expired (1 hour validity)
+	if user.last_reset_password_key_generated_on:
+		expiry_time = add_to_date(user.last_reset_password_key_generated_on, hours=1)
+		if now_datetime() > expiry_time:
+			return {
+				"valid": False,
+				"message": "This reset link has expired. Please request a new one."
+			}
+
+	return {
+		"valid": True,
+		"email": user.email,
+		"first_name": user.first_name
+	}
+
+
+@frappe.whitelist(allow_guest=True)
+def reset_password_with_token(token, new_password):
+	"""
+	Reset password using a valid reset token.
+	"""
+	if not token or not new_password:
+		frappe.throw(frappe._("Reset token and new password are required"))
+
+	# Validate token first
+	validation = validate_reset_token(token)
+
+	if not validation.get("valid"):
+		frappe.throw(frappe._(validation.get("message", "Invalid reset token")))
+
+	# Find user with this reset key
+	user_name = frappe.db.get_value("User", {"reset_password_key": token}, "name")
+
+	if not user_name:
+		frappe.throw(frappe._("Invalid reset token"))
+
+	# Update password
+	update_password(user_name, new_password)
+
+	# Clear reset key after successful password change
+	frappe.db.set_value("User", user_name, {
+		"reset_password_key": "",
+		"last_reset_password_key_generated_on": None
+	})
+	frappe.db.commit()
+
+	return {
+		"success": True,
+		"message": "Password has been reset successfully. You can now log in with your new password."
+	}
+
+
+def send_password_reset_email(user_name, first_name, email, reset_key):
+	"""Send password reset email with reset link."""
+	try:
+		# Generate reset link
+		reset_link = frappe.utils.get_url(f"/reset-password?token={reset_key}")
+
+		# Email subject and message
+		subject = "Reset Your Localisation Hub Password"
+
+		message = f"""
+		<div style="font-family: 'Google Sans', system-ui, sans-serif; max-width: 600px; margin: 0 auto;">
+			<div style="background: linear-gradient(135deg, #011E41 0%, #1e3a8a 100%); padding: 32px; text-align: center;">
+				<div style="display: inline-flex; align-items: center; gap: 12px; background: white; padding: 16px 24px; border-radius: 4px;">
+					<div style="width: 48px; height: 48px; background: #ee2435; color: white; font-weight: bold; font-size: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px;">+</div>
+					<div style="text-align: left;">
+						<div style="font-weight: 600; font-size: 18px; color: #111827;">Localisation Hub</div>
+					</div>
+				</div>
+			</div>
+
+			<div style="background: white; padding: 40px; border: 1px solid #e5e7eb;">
+				<h1 style="font-size: 24px; font-weight: bold; color: #111827; margin: 0 0 16px 0;">Reset Your Password</h1>
+
+				<p style="color: #4b5563; line-height: 1.6; margin: 0 0 24px 0;">Dear {first_name},</p>
+
+				<p style="color: #4b5563; line-height: 1.6; margin: 0 0 24px 0;">We received a request to reset your password for your Localisation Hub account. Click the button below to create a new password:</p>
+
+				<div style="text-align: center; margin: 32px 0;">
+					<a href="{reset_link}" style="display: inline-block; padding: 14px 32px; background-color: #ee2435; color: white; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 16px;">Reset Password</a>
+				</div>
+
+				<p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0 0 16px 0;">Or copy and paste this link into your browser:</p>
+				<p style="color: #3b82f6; font-size: 14px; word-break: break-all; margin: 0 0 24px 0;">{reset_link}</p>
+
+				<div style="background: #fef2f2; border-left: 4px solid #ee2435; padding: 16px; margin: 24px 0;">
+					<p style="color: #991b1b; font-size: 14px; line-height: 1.6; margin: 0;"><strong>Security Notice:</strong> This link will expire in 1 hour. If you didn't request this password reset, please ignore this email or contact support if you have concerns.</p>
+				</div>
+
+				<p style="color: #4b5563; line-height: 1.6; margin: 24px 0 0 0;">Best regards,<br><strong>The Localisation Hub Team</strong></p>
+			</div>
+
+			<div style="background: #f9fafb; padding: 24px; text-align: center; border: 1px solid #e5e7eb; border-top: none;">
+				<p style="color: #6b7280; font-size: 12px; margin: 0;">© 2026 The Localisation Hub</p>
+			</div>
+		</div>
+		"""
+
+		frappe.sendmail(
+			recipients=[email],
+			subject=subject,
+			message=message,
+			delayed=False
+		)
+
+		return True
+
+	except Exception as e:
+		frappe.log_error(f"Failed to send password reset email to {email}: {str(e)}")
+		return False

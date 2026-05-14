@@ -41,7 +41,7 @@ export const news: NewsItem[] = [
     tag: "Leadership",
     title: "Steering Group convenes in Kampala to set 2026–27 agenda",
     excerpt: "Six National Society leaders aligned the Alliance's two-year roadmap focused on governance and financial autonomy.",
-    body: "The Localisation Alliance Steering Group, chaired by the Uganda Red Cross Society, met in Kampala for three days of strategic planning. The agenda set priorities for the next two years across all four pillars, with new commitments on transparent governance and locally generated income.",
+    body: "The Localisation Hub Steering Group, chaired by the Uganda Red Cross Society, met in Kampala for three days of strategic planning. The agenda set priorities for the next two years across all four pillars, with new commitments on transparent governance and locally generated income.",
     date: "08 May 2026",
     place: "Kampala, Uganda",
     color: "leadership",
@@ -116,7 +116,7 @@ export const events: EventItem[] = [
     type: "In-person · Nairobi, Kenya",
     time: "3 days · Full agenda",
     location: "Nairobi, Kenya",
-    description: "The flagship convening of the Localisation Alliance brings together National Society leadership, partners and the broader IFRC network for three days of dialogue, peer learning and strategy.",
+    description: "The flagship convening of the Localisation Hub brings together National Society leadership, partners and the broader IFRC network for three days of dialogue, peer learning and strategy.",
     format: "In-person",
   },
   {
@@ -221,7 +221,7 @@ export const publications: Publication[] = [
   },
   {
     slug: "alliance-annual-report-2025",
-    title: "Localisation Alliance Annual Report 2025",
+    title: "Localisation Hub Annual Report 2025",
     description: "Full-year results across the four pillars, with country-level highlights and 2026 outlook.",
     category: "Report",
     pillar: "leadership",
@@ -229,7 +229,7 @@ export const publications: Publication[] = [
     size: "8.7 MB",
     pages: 96,
     date: "15 Mar 2026",
-    author: "Localisation Alliance Secretariat",
+    author: "Localisation Hub Secretariat",
   },
   {
     slug: "domestic-resource-mobilisation-guide",

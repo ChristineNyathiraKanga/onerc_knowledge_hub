@@ -21,7 +21,8 @@ export default function LoginForm() {
         password: credentials.password,
       });
       toast.success("Welcome back! Logged in successfully");
-      navigate("/");
+      // Use window.location.href to force full page reload after login
+      window.location.href = "/ans-hub";
     } catch (error: any) {
       toast.error(error.message || "Invalid login credentials. Please try again.");
     } finally {
