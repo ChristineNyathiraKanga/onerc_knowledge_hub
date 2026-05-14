@@ -57,10 +57,19 @@ export default function SetPassword() {
 
       toast.success("Account activated successfully! Redirecting to login...");
       setTimeout(() => {
-        navigate("/ans-hub/login");
+        navigate("../login");
       }, 2000);
     } catch (error: any) {
-      toast.error(error.message || "Failed to activate account. The link may have expired.");
+      const errorMessage = error.message || error.exception || "Failed to activate account";
+
+      if (errorMessage.includes("Invalid or expired")) {
+        toast.error("This activation link has expired or is invalid. Please contact support for a new activation link.");
+        setTimeout(() => {
+          navigate("../login");
+        }, 3000);
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -199,7 +208,7 @@ export default function SetPassword() {
         {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/ans-hub/login" className="text-dash-red font-medium hover:underline">
+          <Link to="../login" className="text-dash-red font-medium hover:underline">
             Sign in
           </Link>
         </div>

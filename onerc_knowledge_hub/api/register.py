@@ -263,17 +263,24 @@ def approve_localisation_hub_user(name):
 	if lhu.user_id:
 		frappe.throw(frappe._("User account already exists for this person"))
 
-	# Create inactive User account
-	user = frappe.get_doc({
-		"doctype": "User",
-		"email": lhu.prefered_contact_email,
-		"first_name": lhu.first_name,
-		"last_name": lhu.last_name or "",
-		"enabled": 0,  # Account is disabled until password is set
-		"send_welcome_email": 0,
-		"user_type": "System User",
-	})
-	user.insert(ignore_permissions=True)
+	# Check if a User with this email already exists
+	existing_user = frappe.db.get_value("User", {"email": lhu.prefered_contact_email}, "name")
+
+	if existing_user:
+		# User already exists, just link it to the Localisation Hub User
+		user = frappe.get_doc("User", existing_user)
+	else:
+		# Create inactive User account
+		user = frappe.get_doc({
+			"doctype": "User",
+			"email": lhu.prefered_contact_email,
+			"first_name": lhu.first_name,
+			"last_name": lhu.last_name or "",
+			"enabled": 0,  # Account is disabled until password is set
+			"send_welcome_email": 0,
+			"user_type": "System User",
+		})
+		user.insert(ignore_permissions=True)
 
 	# Add default role - customize as needed
 	# user.add_roles("Localisation Hub User Role")
@@ -299,8 +306,21 @@ def approve_localisation_hub_user(name):
 def send_activation_email(lhu):
 	"""Send activation email to approved user with password setup link."""
 	try:
-		# Generate activation link
-		activation_link = frappe.utils.get_url(f"/set-password?key={lhu.name}")
+		# Generate secure activation token
+		from frappe.utils import random_string, now_datetime, add_to_date
+		import hashlib
+
+		activation_token = random_string(32)
+		activation_token_hash = hashlib.sha256(activation_token.encode()).hexdigest()
+
+		# Store token hash and expiry in Localisation Hub User
+		lhu.activation_token = activation_token_hash
+		lhu.activation_token_expiry = add_to_date(now_datetime(), days=7)
+		lhu.save(ignore_permissions=True)
+		frappe.db.commit()
+
+		# Generate activation link with /ans-hub/ path
+		activation_link = frappe.utils.get_url(f"/ans-hub/set-password?token={activation_token}")
 
 		# Email subject and message
 		subject = "Your Africa Localisation Hub Account Has Been Approved"
@@ -317,7 +337,7 @@ def send_activation_email(lhu):
 		<p>Or copy and paste this link into your browser:</p>
 		<p>{activation_link}</p>
 
-		<p>This link will allow you to set your password and gain full access to the platform.</p>
+		<p>This link will expire in 7 days and will allow you to set your password and gain full access to the platform.</p>
 
 		<p>If you did not request this account, please contact our support team immediately.</p>
 

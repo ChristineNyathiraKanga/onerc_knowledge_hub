@@ -25,6 +25,7 @@ export default function UsersManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const { call: getAllUsers } = useFrappePostCall("onerc_knowledge_hub.api.register.get_all_hub_users");
   const { call: approveUser } = useFrappePostCall("onerc_knowledge_hub.api.register.approve_localisation_hub_user");
@@ -57,12 +58,15 @@ export default function UsersManagement() {
       return;
     }
 
+    setActionLoading(userName);
     try {
-      await approveUser({ name: userName });
-      toast.success("User approved successfully! Activation email sent.");
+      const result = await approveUser({ name: userName });
+      toast.success(result?.message || "User approved successfully! Activation email sent.");
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || "Failed to approve user");
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -71,12 +75,15 @@ export default function UsersManagement() {
       return;
     }
 
+    setActionLoading(userName);
     try {
-      await rejectUser({ name: userName });
-      toast.success("User application rejected");
+      const result = await rejectUser({ name: userName });
+      toast.success(result?.message || "User application rejected");
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || "Failed to reject user");
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -85,12 +92,15 @@ export default function UsersManagement() {
       return;
     }
 
+    setActionLoading(userName);
     try {
       const result = await resendActivationEmail({ localisation_hub_user: userName });
       toast.success(result?.message || "Activation email sent successfully!");
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || "Failed to send activation email");
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -99,12 +109,15 @@ export default function UsersManagement() {
       return;
     }
 
+    setActionLoading(userName);
     try {
       const result = await sendPasswordResetEmail({ localisation_hub_user: userName });
       toast.success(result?.message || "Password reset email sent successfully!");
       fetchUsers();
     } catch (error: any) {
       toast.error(error.message || "Failed to send password reset email");
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -323,38 +336,78 @@ export default function UsersManagement() {
                           <>
                             <button
                               onClick={() => handleApprove(user.name)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
+                              disabled={actionLoading === user.name}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <UserCheck className="h-3.5 w-3.5" />
-                              Approve
+                              {actionLoading === user.name ? (
+                                <>
+                                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                  Approving...
+                                </>
+                              ) : (
+                                <>
+                                  <UserCheck className="h-3.5 w-3.5" />
+                                  Approve
+                                </>
+                              )}
                             </button>
                             <button
                               onClick={() => handleReject(user.name)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                              disabled={actionLoading === user.name}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <UserX className="h-3.5 w-3.5" />
-                              Reject
+                              {actionLoading === user.name ? (
+                                <>
+                                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                  Rejecting...
+                                </>
+                              ) : (
+                                <>
+                                  <UserX className="h-3.5 w-3.5" />
+                                  Reject
+                                </>
+                              )}
                             </button>
                           </>
                         )}
                         {user.status === "Approved" && !user.user_enabled && (
                           <button
                             onClick={() => handleResendActivation(user.name, user.prefered_contact_email)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                            disabled={actionLoading === user.name}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             title="Resend activation email"
                           >
-                            <Send className="h-3.5 w-3.5" />
-                            Resend Activation
+                            {actionLoading === user.name ? (
+                              <>
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                Sending...
+                              </>
+                            ) : (
+                              <>
+                                <Send className="h-3.5 w-3.5" />
+                                Resend Activation
+                              </>
+                            )}
                           </button>
                         )}
                         {user.status === "Approved" && user.user_enabled && (
                           <button
                             onClick={() => handlePasswordReset(user.name, user.prefered_contact_email)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors"
+                            disabled={actionLoading === user.name}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-dash-navy text-white text-sm font-medium rounded-lg hover:bg-blue-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             title="Send password reset email"
                           >
-                            <KeyRound className="h-3.5 w-3.5" />
-                            Reset Password
+                            {actionLoading === user.name ? (
+                              <>
+                                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                Sending...
+                              </>
+                            ) : (
+                              <>
+                                <KeyRound className="h-3.5 w-3.5" />
+                                Reset Password
+                              </>
+                            )}
                           </button>
                         )}
                         {user.status === "Rejected" && (
