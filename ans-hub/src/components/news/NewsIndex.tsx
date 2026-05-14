@@ -1,23 +1,41 @@
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { useFrappeGetCall } from "frappe-react-sdk";
 import { Newspaper, TrendingUp, Activity, ArrowUpRight, ChevronRight, BookOpen, Filter, Star } from "lucide-react";
-import { news, pillarColor, publications } from "../../lib/site-data";
-
-const categories = [
-  { name: "Leadership", color: "bg-pillar-leadership", count: news.filter(n => n.color === "leadership").length },
-  { name: "Branch Development", color: "bg-pillar-branch", count: news.filter(n => n.color === "branch").length },
-  { name: "Resource Mobilisation", color: "bg-pillar-resource", count: news.filter(n => n.color === "resource").length },
-  { name: "Finance Development", color: "bg-pillar-finance", count: news.filter(n => n.color === "finance").length },
-];
+import { pillarColor, publications } from "../../lib/site-data";
+import { mapArticleToNewsItem, type Article } from "../../lib/utils";
 
 export default function NewsIndex() {
+  // Fetch articles from API
+  const { data: articlesData, isLoading, error } = useFrappeGetCall<{ message: Article[] }>(
+    "onerc_core.api.article.get_articles",
+    {}
+  );
+
+  // Transform API data to component format with cover images
+  const news = useMemo(() => {
+    if (!articlesData?.message) return [];
+    return articlesData.message.map(article => ({
+      ...mapArticleToNewsItem(article),
+      cover_image: article.cover_image
+    }));
+  }, [articlesData]);
+
+  // Calculate category counts dynamically
+  const categories = useMemo(() => [
+    { name: "Leadership", color: "bg-pillar-leadership", count: news.filter(n => n.color === "leadership").length },
+    { name: "Branch Development", color: "bg-pillar-branch", count: news.filter(n => n.color === "branch").length },
+    { name: "Resource Mobilisation", color: "bg-pillar-resource", count: news.filter(n => n.color === "resource").length },
+    { name: "Finance Development", color: "bg-pillar-finance", count: news.filter(n => n.color === "finance").length },
+  ], [news]);
   return (
     <div className="min-h-full bg-gray-50">
       {/* LinkedIn-style container */}
       <div className="mx-auto max-w-7xl px-6 py-6">
         <div className="grid gap-6 lg:grid-cols-12">
 
-          {/* Left Sidebar */}
-          <div className="lg:col-span-3 space-y-4">
+          {/* Left Sidebar - Sticky */}
+          <div className="lg:col-span-3 space-y-4 lg:sticky lg:top-6 lg:self-start">
             {/* Profile Card */}
             <div className="bg-white rounded border border-gray-200 overflow-hidden">
               <div className="h-16 bg-gradient-to-r from-dash-navy to-dash-red"></div>
@@ -102,7 +120,46 @@ export default function NewsIndex() {
 
             {/* News Feed */}
             <div className="space-y-4">
-              {news.map((n, index) => (
+              {/* Loading State */}
+              {isLoading && (
+                <>
+                  {Array.from({ length: 3 }).map((_, idx) => (
+                    <div key={idx} className="bg-white rounded border border-gray-200 p-4 animate-pulse">
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className="h-12 w-12 rounded bg-gray-200"></div>
+                        <div className="flex-1">
+                          <div className="h-4 bg-gray-200 rounded w-32 mb-2"></div>
+                          <div className="h-3 bg-gray-200 rounded w-48"></div>
+                        </div>
+                      </div>
+                      <div className="h-6 bg-gray-200 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-200 rounded w-full mb-1"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {/* Error State */}
+              {error && (
+                <div className="bg-white rounded border border-red-200 p-8 text-center">
+                  <Newspaper className="h-12 w-12 text-red-300 mx-auto mb-3" />
+                  <p className="text-red-600 font-medium mb-2">Failed to load articles</p>
+                  <p className="text-sm text-gray-500">Please try refreshing the page</p>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!isLoading && !error && news.length === 0 && (
+                <div className="bg-white rounded border border-gray-200 p-12 text-center">
+                  <Newspaper className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 font-medium mb-2">No stories published yet</p>
+                  <p className="text-sm text-gray-400">Check back later for updates from the network</p>
+                </div>
+              )}
+
+              {/* News Items */}
+              {!isLoading && !error && news.map((n, index) => (
                 <div key={n.slug} className="bg-white rounded border border-gray-200">
                   {/* Post Header */}
                   <div className="p-4 pb-3">
@@ -139,19 +196,30 @@ export default function NewsIndex() {
                     <p className="text-sm text-gray-600 line-clamp-3">{n.excerpt}</p>
                   </Link>
 
-                  {/* Post Visual (for featured/first item) */}
-                  {index === 0 && (
-                    <div className={`mx-4 mb-3 h-48 rounded ${pillarColor[n.color]} relative overflow-hidden`}>
-                      <div
-                        className="absolute inset-0 opacity-10"
-                        style={{
-                          backgroundImage: "radial-gradient(circle at 30% 50%, white 2px, transparent 2px)",
-                          backgroundSize: "24px 24px",
-                        }}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-white/20 text-6xl font-bold">{n.tag.toUpperCase()}</div>
-                      </div>
+                  {/* Post Visual - Show cover image if available, otherwise show featured placeholder */}
+                  {(n.cover_image || index === 0) && (
+                    <div className="mx-4 mb-3 h-48 rounded relative overflow-hidden">
+                      {n.cover_image ? (
+                        <img
+                          src={n.cover_image}
+                          alt={n.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <>
+                          <div className={`absolute inset-0 ${pillarColor[n.color]}`} />
+                          <div
+                            className="absolute inset-0 opacity-10"
+                            style={{
+                              backgroundImage: "radial-gradient(circle at 30% 50%, white 2px, transparent 2px)",
+                              backgroundSize: "24px 24px",
+                            }}
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-white/20 text-6xl font-bold">{n.tag.toUpperCase()}</div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
 
@@ -175,8 +243,8 @@ export default function NewsIndex() {
             </div>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="lg:col-span-3 space-y-4">
+          {/* Right Sidebar - Sticky */}
+          <div className="lg:col-span-3 space-y-4 lg:sticky lg:top-6 lg:self-start">
             {/* Featured News */}
             <div className="bg-white rounded border border-gray-200 p-4">
               <div className="flex items-center justify-between mb-4">

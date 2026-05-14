@@ -99,19 +99,41 @@ def get_knowledge_resources_count():
 
 
 def get_recent_news(limit=3):
-	"""Get recent news articles"""
-	if not frappe.db.exists("DocType", "News Article"):
+	"""Get recent published articles from Article doctype"""
+	if not frappe.db.exists("DocType", "Article"):
 		return []
 
-	news = frappe.get_all(
-		"News Article",
-		fields=["name", "title", "excerpt", "published_date", "tag", "location", "color"],
-		filters={"published": 1},
-		order_by="published_date desc",
+	articles = frappe.get_all(
+		"Article",
+		fields=[
+			"name",
+			"title",
+			"slug",
+			"summary as excerpt",
+			"published_on as published_date",
+			"category as tag",
+			"cover_image",
+			"is_featured"
+		],
+		filters={"status": "Published", "docstatus": 1},
+		order_by="is_featured desc, published_on desc",
 		limit=limit
 	)
 
-	return news
+	# Add color field based on category
+	# Map category names to color schemes
+	category_color_map = {
+		"Leadership": "leadership",
+		"Branch Development": "branch",
+		"Resource Mobilisation": "resource",
+		"Finance Development": "finance"
+	}
+
+	for article in articles:
+		category = article.get("tag", "")
+		article["color"] = category_color_map.get(category, "leadership")
+
+	return articles
 
 
 def get_upcoming_events(limit=3):

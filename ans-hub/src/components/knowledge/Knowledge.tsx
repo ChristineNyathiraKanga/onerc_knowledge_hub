@@ -131,7 +131,7 @@ export default function Knowledge() {
             {stats.map((s) => (
               <div key={s.label} className="text-center">
                 <div className="mb-1 flex justify-center">
-                  <s.icon className="h-5 w-5 text-gray-400" />
+                  <s.icon className="h-5 w-5 text-dash-navy" />
                 </div>
                 <div className="font-display text-xl font-bold text-gray-900">
                   {s.value}
@@ -149,7 +149,7 @@ export default function Knowledge() {
             placeholder="Search files and folders..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-gray-900 transition-all placeholder:text-gray-400 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-gray-900 transition-all placeholder:text-gray-400 focus:border-transparent focus:bg-white focus:outline-none focus:ring-2 focus:ring-dash-navy"
           />
         </div>
       </div>
@@ -233,14 +233,14 @@ export default function Knowledge() {
                 key={pub.name}
                 className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-lg"
               >
-                <div className="relative flex items-center justify-center border-b border-gray-100 bg-gradient-to-br from-blue-50 to-blue-100 p-8">
+                <div className="relative flex items-center justify-center border-b border-gray-100 bg-gradient-to-br from-dash-navy/5 to-dash-navy/15 p-8">
                   <div className="absolute right-3 top-3">
                     <span className="inline-flex items-center rounded-md bg-white/80 px-2 py-0.5 text-[10px] font-semibold text-gray-700 shadow-sm backdrop-blur-sm">
                       {pub.resource_type}
                     </span>
                   </div>
                   <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-white shadow-md">
-                    <FileText className="h-10 w-10 text-blue-600" />
+                    <FileText className="h-10 w-10 text-dash-navy" />
                   </div>
                 </div>
 
@@ -268,7 +268,7 @@ export default function Knowledge() {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-100 bg-gray-50 p-3">
+                <div className="border-t border-gray-100 bg-dash-navy/5 p-3">
                   {pub.file_attachment ? (
                     <a
                       href={pub.file_attachment}
@@ -296,7 +296,7 @@ export default function Knowledge() {
           </div>
         ) : (
           <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-            <div className="grid grid-cols-12 gap-4 border-b border-gray-200 bg-gray-50 px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-600">
+            <div className="grid grid-cols-12 gap-4 border-b border-gray-200 bg-dash-navy/5 px-6 py-3 text-xs font-semibold uppercase tracking-wider text-gray-600">
               <div className="col-span-5">Name</div>
               <div className="col-span-2">Category</div>
               <div className="col-span-2">Organization</div>
@@ -311,8 +311,8 @@ export default function Knowledge() {
                   className="group grid grid-cols-12 items-center gap-4 px-6 py-4 transition-colors hover:bg-gray-50"
                 >
                   <div className="col-span-5 flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-blue-50">
-                      <FileText className="h-5 w-5 text-blue-600" />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-dash-navy/10">
+                      <FileText className="h-5 w-5 text-dash-navy" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3 className="line-clamp-1 text-sm font-semibold text-gray-900 transition-colors group-hover:text-dash-red">
@@ -365,8 +365,8 @@ export default function Knowledge() {
       ) : (
         <div className="rounded-lg border border-gray-200 bg-white p-16 shadow-sm">
           <div className="flex flex-col items-center justify-center text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-              <Search className="h-8 w-8 text-gray-400" />
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-dash-navy/10">
+              <Search className="h-8 w-8 text-dash-navy" />
             </div>
             <h3 className="font-display mb-2 text-lg font-semibold text-gray-900">
               No files found

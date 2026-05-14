@@ -9,9 +9,9 @@ const formatBadge: Record<string, string> = {
 };
 
 const formatColor: Record<string, string> = {
-  Webinar: "bg-blue-500",
-  "In-person": "bg-green-500",
-  Hybrid: "bg-purple-500",
+  Webinar: "bg-dash-navy",
+  "In-person": "bg-dash-navy",
+  Hybrid: "bg-dash-navy",
 };
 
 export default function EventsIndex() {
@@ -107,9 +107,9 @@ export default function EventsIndex() {
               className="group flex items-start gap-6 rounded border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-dash-red/30"
             >
               {/* Date badge */}
-              <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded border-2 border-gray-200 bg-gray-50">
-                <span className="text-3xl font-bold leading-none text-gray-900">{e.day}</span>
-                <span className="mt-1 text-[10px] font-bold uppercase tracking-wider text-dash-red">
+              <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded bg-dash-navy">
+                <span className="text-3xl font-bold leading-none text-white">{e.day}</span>
+                <span className="mt-1 text-[10px] font-bold uppercase tracking-wider text-red-400">
                   {e.month}
                 </span>
               </div>
