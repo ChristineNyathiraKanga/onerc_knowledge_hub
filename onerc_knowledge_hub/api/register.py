@@ -135,10 +135,26 @@ def check_registration_status(email):
 
 
 @frappe.whitelist(allow_guest=True)
-def set_password_and_activate(localisation_hub_user, new_password):
-	if not localisation_hub_user:
+def set_password_and_activate(token, new_password):
+	"""
+	Activate user account using secure token and set password.
+	"""
+	if not token or not new_password:
 		frappe.throw(frappe._("Invalid request"))
 
+	# Import the verify function from user_management
+	from onerc_knowledge_hub.api.user_management import verify_activation_token
+	import hashlib
+
+	# Verify the token
+	verification = verify_activation_token(token)
+
+	if not verification.get("valid"):
+		frappe.throw(frappe._(verification.get("message", "Invalid activation link")))
+
+	localisation_hub_user = verification.get("localisation_hub_user")
+
+	# Get the Localisation Hub User details
 	lhu = frappe.db.get_value(
 		"Localisation Hub User",
 		localisation_hub_user,
@@ -160,11 +176,80 @@ def set_password_and_activate(localisation_hub_user, new_password):
 	if user.enabled:
 		frappe.throw(frappe._("Account is already active"))
 
+	# Set password and enable user
 	update_password(user.name, new_password)
 	user.enabled = 1
 	user.save(ignore_permissions=True)
 
+	# Clear the activation token so it can't be reused
+	frappe.db.set_value("Localisation Hub User", lhu.name, {
+		"activation_token": None,
+		"activation_token_expiry": None
+	})
+	frappe.db.commit()
+
 	return {"activated": True, "user": user.name}
+
+
+@frappe.whitelist(allow_guest=True)
+def reset_password_with_token(token, new_password):
+	"""
+	Reset password for an already activated user using a secure token.
+	"""
+	if not token or not new_password:
+		frappe.throw(frappe._("Invalid request"))
+
+	# Import the verify function from user_management
+	from onerc_knowledge_hub.api.user_management import verify_activation_token
+	import hashlib
+
+	# Verify the token
+	verification = verify_activation_token(token)
+
+	if not verification.get("valid"):
+		frappe.throw(frappe._(verification.get("message", "Invalid reset link")))
+
+	localisation_hub_user = verification.get("localisation_hub_user")
+
+	# Get the Localisation Hub User details
+	lhu = frappe.db.get_value(
+		"Localisation Hub User",
+		localisation_hub_user,
+		["name", "user_id", "status"],
+		as_dict=True,
+	)
+
+	if not lhu:
+		frappe.throw(frappe._("Localisation Hub User not found"))
+
+	if lhu.status != "Approved":
+		frappe.throw(frappe._("Your application has not been approved"))
+
+	if not lhu.user_id:
+		frappe.throw(frappe._("No system user linked to this account"))
+
+	user = frappe.get_doc("User", lhu.user_id)
+
+	# For password reset, the user should already be enabled
+	# But we'll allow reset for both enabled and disabled accounts
+
+	# Set new password
+	update_password(user.name, new_password)
+
+	# Make sure user is enabled
+	if not user.enabled:
+		user.enabled = 1
+		user.save(ignore_permissions=True)
+
+	# Clear the reset token so it can't be reused
+	frappe.db.set_value("Localisation Hub User", lhu.name, {
+		"activation_token": None,
+		"activation_token_expiry": None
+	})
+	frappe.db.commit()
+
+	return {"success": True, "message": "Password reset successfully", "user": user.name}
+
 
 #update status of Localisation Hub User to Approved and create User account
 @frappe.whitelist()

@@ -7,7 +7,7 @@ import { Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ShieldCheck } from "lucid
 export default function SetPassword() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const localisationHubUser = searchParams.get("key"); // The Localisation Hub User ID from the email link
+  const token = searchParams.get("token"); // The secure activation token from the email link
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,7 +33,7 @@ export default function SetPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!localisationHubUser) {
+    if (!token) {
       toast.error("Invalid activation link. Please check your email.");
       return;
     }
@@ -51,13 +51,13 @@ export default function SetPassword() {
     setIsLoading(true);
     try {
       await activateAccount({
-        localisation_hub_user: localisationHubUser,
+        token: token,
         new_password: password,
       });
 
       toast.success("Account activated successfully! Redirecting to login...");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/ans-hub/login");
       }, 2000);
     } catch (error: any) {
       toast.error(error.message || "Failed to activate account. The link may have expired.");
@@ -199,7 +199,7 @@ export default function SetPassword() {
         {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-dash-red font-medium hover:underline">
+          <Link to="/ans-hub/login" className="text-dash-red font-medium hover:underline">
             Sign in
           </Link>
         </div>
