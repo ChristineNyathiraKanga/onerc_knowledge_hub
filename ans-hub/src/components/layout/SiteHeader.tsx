@@ -2,6 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useFrappeAuth } from "frappe-react-sdk";
 import { LogOut } from "lucide-react";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export function SiteHeader() {
   const location = useLocation();
@@ -78,11 +80,11 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   const navigate = useNavigate();
-  const { currentUser, logout } = useFrappeAuth();
+  const { currentUser } = useFrappeAuth();
+  const { logout } = useContext(UserContext);
 
   const handleSignOut = async () => {
     await logout();
-    navigate("/login");
   };
 
   return (
@@ -94,7 +96,7 @@ export function SiteFooter() {
             <div className="font-semibold text-base text-gray-900">The Localisation Hub</div>
           </div>
           <p className="mt-4 max-w-md text-sm text-gray-600">
-            A peer-to-peer learning platform supporting African National Societies on the journey toward self-reliance.
+            A peer-to-peer learning platform supporting African National Societies on the journey toward self-reliance
           </p>
         </div>
         <div>

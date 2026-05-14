@@ -21,7 +21,6 @@ import {
   LogOut,
 } from "lucide-react";
 import { UserContext } from "../../contexts/UserContext";
-import { useFrappeAuth } from "frappe-react-sdk";
 
 const navItems = [
   { path: "/", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -44,8 +43,7 @@ const managementItems = [
 export default function DashboardLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userData } = useContext(UserContext);
-  const { logout } = useFrappeAuth();
+  const { userData, logout } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -72,7 +70,6 @@ export default function DashboardLayout() {
   // Handle logout
   const handleLogout = async () => {
     await logout();
-    navigate("/login");
   };
 
   return (
@@ -195,7 +192,7 @@ export default function DashboardLayout() {
           <div className="space-y-0.5">
             {!collapsed && (
               <div className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest text-white/40">
-                Management
+                Management.
               </div>
             )}
             {managementItems.map((item) => {
